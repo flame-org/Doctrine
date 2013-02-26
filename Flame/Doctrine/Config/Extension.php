@@ -20,8 +20,6 @@ class Extension extends \Nette\Config\CompilerExtension
 			'driver' => 'pdo_mysql',
 			'charset' => 'utf8',
 			'port' => '3306',
-			'collation' => false,
-			'autowired' => false,
 		),
 		'entityDirs' => array('%appDir%'),
 		'proxyDir' => '%rootDir%/temp/proxy',
