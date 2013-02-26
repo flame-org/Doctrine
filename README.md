@@ -7,7 +7,7 @@ Collection of classes for working with Doctrine2 on Flame framework
 
 1. Add require into the composer.json
 
-```php
+```json
 	"require": {
 		"flame/doctrine": "@dev"
 	}
@@ -15,7 +15,9 @@ Collection of classes for working with Doctrine2 on Flame framework
 
 2. Install dependencies
 	
-	`composer install/update`
+```
+	composer install/update
+```
 
 3. Register **doctrine** extension into the bootstrap.php
 
