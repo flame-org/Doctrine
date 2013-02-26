@@ -42,10 +42,10 @@ class Extension extends \Nette\Config\CompilerExtension
 		$mappingStrategy = $builder->addDefinition($this->prefix('mappingStrategy'))
 			->setClass('\Doctrine\ORM\Mapping\UnderscoreNamingStrategy');
 
-		$eventManager = $builder->addDefinition($this->prefix('eventManager'))
-			->setClass('\Doctrine\Common\EventManager');
-
 		if($config['tablePrefix'] !== null){
+
+			$eventManager = $builder->addDefinition($this->prefix('eventManager'))
+				->setClass('\Doctrine\Common\EventManager');
 
 			$tablePrefix = $builder->addDefinition($this->prefix('tablePrefix'))
 				->setClass('\Flame\Doctrine\TablePrefix', array($config['tablePrefix']));
@@ -74,7 +74,11 @@ class Extension extends \Nette\Config\CompilerExtension
 
 		$entityManager = $builder->addDefinition($this->prefix('entityManager'))
 			->setClass('Doctrine\ORM\EntityManager')
-			->setFactory('Doctrine\ORM\EntityManager::create', array($config['connection'], $configuration, $eventManager));
+			->setFactory('Doctrine\ORM\EntityManager::create', array(
+				$config['connection'],
+				$configuration,
+				(isset($eventManager)) ? $eventManager : null
+		));
 
 	}
 
