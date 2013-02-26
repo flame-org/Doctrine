@@ -14,9 +14,8 @@ class Extension extends \Nette\Config\CompilerExtension
 	/** @var array */
 	public $defaults = array(
 		'debugger' => null,
-		'tablePrefix' => true,
+		'tablePrefix' => null,
 		'connection' => array(
-			'prefix' => '',
 			'driver' => 'pdo_mysql',
 			'charset' => 'utf8',
 			'port' => '3306',
@@ -46,10 +45,10 @@ class Extension extends \Nette\Config\CompilerExtension
 		$eventManager = $builder->addDefinition($this->prefix('eventManager'))
 			->setClass('\Doctrine\Common\EventManager');
 
-		if($config['tablePrefix']){
+		if($config['tablePrefix'] !== null){
 
 			$tablePrefix = $builder->addDefinition($this->prefix('tablePrefix'))
-				->setClass('\Flame\Doctrine\TablePrefix', array($config['connection']['prefix']));
+				->setClass('\Flame\Doctrine\TablePrefix', array($config['tablePrefix']));
 
 			$eventManager->addSetup('addEventListener', array('loadClassMetadata', $tablePrefix));
 		}
