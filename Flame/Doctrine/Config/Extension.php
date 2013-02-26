@@ -15,6 +15,7 @@ class Extension extends \Nette\Config\CompilerExtension
 	public $defaults = array(
 		'debugger' => null,
 		'tablePrefix' => null,
+		'mapping' => false,
 		'connection' => array(
 			'driver' => 'pdo_mysql',
 			'charset' => 'utf8',
@@ -39,9 +40,6 @@ class Extension extends \Nette\Config\CompilerExtension
 
 		$this->compiler->parseServices($builder, $config, $this->name);
 
-		$mappingStrategy = $builder->addDefinition($this->prefix('mappingStrategy'))
-			->setClass('\Doctrine\ORM\Mapping\UnderscoreNamingStrategy');
-
 		if($config['tablePrefix'] !== null){
 
 			$eventManager = $builder->addDefinition($this->prefix('eventManager'))
@@ -59,11 +57,17 @@ class Extension extends \Nette\Config\CompilerExtension
 		$configuration = $builder->addDefinition($this->prefix('configuration'))
 			->setClass('\Doctrine\ORM\Configuration')
 			->addSetup('setProxyDir', array($config['proxyDir']))
-			->addSetup('setNamingStrategy', array($mappingStrategy))
 			->addSetup('setDefaultRepositoryClassName', array($config['repositoryClass']))
 			->addSetup('setMetadataCacheImpl', array($cache))
 			->addSetup('setQueryCacheImpl', array($cache))
 			->addSetup('setResultCacheImpl', array($cache));
+
+		if($config['mapping'] === true){
+			$mappingStrategy = $builder->addDefinition($this->prefix('mappingStrategy'))
+				->setClass('\Doctrine\ORM\Mapping\UnderscoreNamingStrategy');
+
+			$configuration->addSetup('setNamingStrategy', array($mappingStrategy));
+		}
 
 		if($config['debugger']){
 			$sqlLogger = $builder->addDefinition($this->prefix('sqlLogger'))
