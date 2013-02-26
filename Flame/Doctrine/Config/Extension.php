@@ -22,7 +22,7 @@ class Extension extends \Nette\Config\CompilerExtension
 			'port' => '3306',
 		),
 		'entityDirs' => array('%appDir%'),
-		'proxyDir' => '%rootDir%/temp/proxy',
+		'proxyDir' => '%appDir%/../temp/proxy',
 		'repositoryClass' => 'Flame\Doctrine\Model\Repository',
 	);
 
