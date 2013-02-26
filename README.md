@@ -39,8 +39,8 @@ or
 
 **in config.neon**
 
-```yml
+```
 	doctrine:
 	  connection: %database%
+	  entityDirs: [%appDir%/Entity]
 ```
-  entityDirs: [%appDir%/Entity]
