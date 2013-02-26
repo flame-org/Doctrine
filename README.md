@@ -34,3 +34,13 @@ or
 			$compiler->addExtension('doctrine', new \Flame\Doctrine\Config\Extension);
 		};
 ```
+
+##Usage
+
+**in config.neon**
+
+```yml
+	doctrine:
+	  connection: %database%
+```
+  entityDirs: [%appDir%/Entity]
