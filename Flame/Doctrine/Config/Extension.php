@@ -15,7 +15,7 @@ class Extension extends \Nette\Config\CompilerExtension
 	public $defaults = array(
 		'debugger' => null,
 		'tablePrefix' => null,
-		'mapping' => false,
+		'namingStrategy' => false,
 		'connection' => array(
 			'driver' => 'pdo_mysql',
 			'charset' => 'utf8',
@@ -62,11 +62,11 @@ class Extension extends \Nette\Config\CompilerExtension
 			->addSetup('setQueryCacheImpl', array($cache))
 			->addSetup('setResultCacheImpl', array($cache));
 
-		if($config['mapping'] === true){
-			$mappingStrategy = $builder->addDefinition($this->prefix('mappingStrategy'))
+		if($config['namingStrategy'] === true){
+			$namingStrategy = $builder->addDefinition($this->prefix('mappingStrategy'))
 				->setClass('\Doctrine\ORM\Mapping\UnderscoreNamingStrategy');
 
-			$configuration->addSetup('setNamingStrategy', array($mappingStrategy));
+			$configuration->addSetup('setNamingStrategy', array($namingStrategy));
 		}
 
 		if($config['debugger']){
