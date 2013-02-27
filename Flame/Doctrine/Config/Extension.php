@@ -45,7 +45,7 @@ class Extension extends \Nette\Config\CompilerExtension
 				->setClass('\Doctrine\Common\EventManager');
 
 			$tablePrefix = $builder->addDefinition($this->prefix('tablePrefix'))
-				->setClass('\Flame\Doctrine\TablePrefix', array($config['tablePrefix']));
+				->setClass('\Flame\Doctrine\TablePrefix', array((string) $config['tablePrefix']));
 
 			$eventManager->addSetup('addEventListener', array('loadClassMetadata', $tablePrefix));
 		}
@@ -56,8 +56,8 @@ class Extension extends \Nette\Config\CompilerExtension
 		$configuration = $builder->addDefinition($this->prefix('configuration'))
 			->setClass('\Doctrine\ORM\Configuration')
 			->addSetup('setAutoGenerateProxyClasses', array((bool) $config['autoGenerateProxy']))
-			->addSetup('setProxyDir', array($config['proxyDir']))
-			->addSetup('setDefaultRepositoryClassName', array($config['repositoryClass']))
+			->addSetup('setProxyDir', array((string) $config['proxyDir']))
+			->addSetup('setDefaultRepositoryClassName', array((string) $config['repositoryClass']))
 			->addSetup('setMetadataCacheImpl', array($cache))
 			->addSetup('setQueryCacheImpl', array($cache))
 			->addSetup('setResultCacheImpl', array($cache));
