@@ -16,6 +16,7 @@ class Extension extends \Nette\Config\CompilerExtension
 		'debugger' => null,
 		'tablePrefix' => null,
 		'namingStrategy' => false,
+		'autoGenerateProxy' => true,
 		'connection' => array(
 			'driver' => 'pdo_mysql',
 			'charset' => 'utf8',
@@ -54,6 +55,7 @@ class Extension extends \Nette\Config\CompilerExtension
 
 		$configuration = $builder->addDefinition($this->prefix('configuration'))
 			->setClass('\Doctrine\ORM\Configuration')
+			->addSetup('setAutoGenerateProxyClasses', (bool) $config['autoGenerateProxy'])
 			->addSetup('setProxyDir', array($config['proxyDir']))
 			->addSetup('setDefaultRepositoryClassName', array($config['repositoryClass']))
 			->addSetup('setMetadataCacheImpl', array($cache))
