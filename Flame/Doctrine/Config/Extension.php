@@ -13,27 +13,32 @@ class Extension extends \Nette\Config\CompilerExtension
 
 	const EXTENSION_NAME = 'doctrine';
 
-	/** @var array */
-	public $defaults = array(
-		'debugger' => null,
-		'tablePrefix' => null,
-		'namingStrategy' => false,
-		'autoGenerateProxy' => true,
-		'connection' => array(
-			'driver' => 'pdo_mysql',
-			'charset' => 'utf8',
-			'port' => '3306',
-		),
-		'entityDirs' => array('%appDir%'),
-		'proxyDir' => '%appDir%/../temp/proxy',
-		'repositoryClass' => 'Flame\Doctrine\Model\Repository',
-	);
+	/**
+	 * @return array
+	 */
+	public  function  getDefaultConfig()
+	{
+		return array(
+			'debugger' => null,
+			'tablePrefix' => null,
+			'namingStrategy' => false,
+			'autoGenerateProxy' => true,
+			'connection' => array(
+				'driver' => 'pdo_mysql',
+				'charset' => 'utf8',
+				'port' => '3306',
+			),
+			'entityDirs' => array('%appDir%'),
+			'proxyDir' => '%appDir%/../temp/proxy',
+			'repositoryClass' => 'Flame\Doctrine\Model\Repository',
+		);
+	}
 
 	public function loadConfiguration()
 	{
 		$this->verifyDoctrineVersion();
 
-		$config = $this->getConfig($this->defaults);
+		$config = $this->getConfig($this->getDefaultConfig());
 		$builder = $this->getContainerBuilder();
 
 		if ($config['debugger'] === null)
