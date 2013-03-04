@@ -11,6 +11,8 @@ namespace Flame\Doctrine\Config;
 class Extension extends \Nette\Config\CompilerExtension
 {
 
+	const EXTENSION_NAME = 'doctrine';
+
 	/** @var array */
 	public $defaults = array(
 		'debugger' => null,
@@ -94,6 +96,17 @@ class Extension extends \Nette\Config\CompilerExtension
 		$configuration = $builder->getDefinition($this->prefix('configuration'));
 		$configuration->setFactory('Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration',
 				array($config['entityDirs'], $builder->parameters['debugMode'], $config['proxyDir'], $cache));
+	}
+
+	/**
+	 * @param \Nette\Config\Configurator $configurator
+	 */
+	public function install(\Nette\Config\Configurator $configurator)
+	{
+		$self = $this;
+		$configurator->onCompile[] = function ($configurator, $compiler) use ($self) {
+			$compiler->addExtension($self::EXTENSION_NAME, $self);
+		};
 	}
 
 	/**
