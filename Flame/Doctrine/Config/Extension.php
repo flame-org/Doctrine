@@ -95,7 +95,7 @@ class Extension extends \Nette\Config\CompilerExtension
 
 	public function beforeCompile()
 	{
-		$config = $this->getConfig($this->defaults);
+		$config = $this->getConfig($this->getDefaultConfig());
 		$builder = $this->getContainerBuilder();
 		$cache = $builder->getDefinition($this->prefix('cache'));
 		$configuration = $builder->getDefinition($this->prefix('configuration'));
