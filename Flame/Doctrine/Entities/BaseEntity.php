@@ -18,7 +18,7 @@ use Flame\Doctrine\UnexpectedValueException;
  *
  * @author Filip Procházka <filip@prochazka.su>
  */
-abstract class BaseEntity extends \Nette\Object
+abstract class BaseEntity extends \Nette\Object implements IEntity
 {
 
 	/** @var array */

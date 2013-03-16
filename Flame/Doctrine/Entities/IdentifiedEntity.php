@@ -8,6 +8,8 @@
 
 namespace Flame\Doctrine\Entities;
 
+use Doctrine\ORM\Proxy\Proxy;
+
 /**
  * @MappedSuperClass
  *
@@ -24,5 +26,20 @@ abstract class IdentifiedEntity extends \Flame\Doctrine\Entities\BaseEntity
 	 * @GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
+
+	/**
+	 * @return integer
+	 */
+	final public function getId()
+	{
+		if ($this instanceof Proxy && !$this->__isInitialized__ && !$this->id) {
+			$identifier = $this->getReflection()->getProperty('_identifier');
+			$identifier->setAccessible(TRUE);
+			$id = $identifier->getValue($this);
+			$this->id = reset($id);
+		}
+
+		return $this->id;
+	}
 
 }

@@ -11,17 +11,17 @@
 namespace Flame\Doctrine\Model;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Flame\Doctrine\Entity;
+use Flame\Doctrine\Entities\IEntity;
 
 class Repository extends \Doctrine\ORM\EntityRepository implements IRepository
 {
 
 	/**
-	 * @param \Flame\Doctrine\Entity $entity
+	 * @param \Flame\Doctrine\Entities\IEntity $entity
 	 * @param bool $withoutFlush
 	 * @return Repository
 	 */
-	public function delete(Entity $entity, $withoutFlush = self::FLUSH)
+	public function delete(IEntity $entity, $withoutFlush = self::FLUSH)
 	{
 		$this->_em->remove($entity);
 		if(!$withoutFlush) $this->flush();
@@ -29,11 +29,11 @@ class Repository extends \Doctrine\ORM\EntityRepository implements IRepository
 	}
 
 	/**
-	 * @param \Flame\Doctrine\Entity $entity
+	 * @param \Flame\Doctrine\Entities\IEntity $entity
 	 * @param bool $withoutFlush
 	 * @return Repository
 	 */
-	public function save(Entity $entity, $withoutFlush = self::FLUSH)
+	public function save(IEntity $entity, $withoutFlush = self::FLUSH)
 	{
 		$this->_em->persist($entity);
 		if(!$withoutFlush) $this->flush();
@@ -41,11 +41,11 @@ class Repository extends \Doctrine\ORM\EntityRepository implements IRepository
 	}
 
 	/**
-	 * @param \Flame\Doctrine\Entity $entity
+	 * @param \Flame\Doctrine\Entities\IEntity $entity
 	 * @param int $flag
 	 * @return \Doctrine\ORM\Mapping\ClassMetadata
 	 */
-	public function setIdGenerator(Entity $entity, $flag = ClassMetadata::GENERATOR_TYPE_NONE)
+	public function setIdGenerator(IEntity $entity, $flag = ClassMetadata::GENERATOR_TYPE_NONE)
 	{
 		$metadata = $this->_em->getClassMetadata(get_class($entity));
 		$metadata->setIdGeneratorType($flag);

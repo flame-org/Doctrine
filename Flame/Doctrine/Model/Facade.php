@@ -10,7 +10,7 @@
 
 namespace Flame\Doctrine\Model;
 
-use Flame\Doctrine\Entity;
+use Flame\Doctrine\Entities\IEntity;
 
 abstract class Facade extends \Nette\Object implements IFacade
 {
@@ -45,7 +45,7 @@ abstract class Facade extends \Nette\Object implements IFacade
 
 	/**
 	 * @param $id
-	 * @return mixed
+	 * @return \Flame\Doctrine\Entities\IEntity
 	 */
 	public function getOne($id)
 	{
@@ -53,21 +53,21 @@ abstract class Facade extends \Nette\Object implements IFacade
 	}
 
 	/**
-	 * @param \Flame\Doctrine\Entity $reference
+	 * @param \Flame\Doctrine\Entities\IEntity $reference
 	 * @param bool $flush
 	 * @return mixed
 	 */
-	public function save(Entity $reference, $flush = true)
+	public function save(IEntity $reference, $flush = true)
 	{
 		return $this->repository->save($reference, !$flush);
 	}
 
 	/**
-	 * @param \Flame\Doctrine\Entity $reference
+	 * @param \Flame\Doctrine\Entities\IEntity $reference
 	 * @param bool $flush
 	 * @return mixed
 	 */
-	public function delete(Entity $reference, $flush = true)
+	public function delete(IEntity $reference, $flush = true)
 	{
 		return $this->repository->delete($reference, !$flush);
 	}

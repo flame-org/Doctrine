@@ -10,27 +10,29 @@
 
 namespace Flame\Doctrine\Model;
 
+use Flame\Doctrine\Entities\IEntity;
+
 interface IFacade
 {
 
 	/**
 	 * @param $id
-	 * @return \Flame\Doctrine\Entity
+	 * @return \Flame\Doctrine\Entities\IEntity
 	 */
 	public function getOne($id);
 
 	/**
-	 * @param \Flame\Doctrine\Entity $reference
+	 * @param \Flame\Doctrine\Entities\IEntity $reference
 	 * @param bool $flush
 	 * @return mixed
 	 */
-	public function save(\Flame\Doctrine\Entity $reference, $flush = true);
+	public function save(IEntity $reference, $flush = true);
 
 	/**
-	 * @param \Flame\Doctrine\Entity $reference
+	 * @param \Flame\Doctrine\Entities\IEntity $reference
 	 * @param bool $flush
 	 * @return mixed
 	 */
-	public function delete(\Flame\Doctrine\Entity $reference, $flush = true);
+	public function delete(IEntity $reference, $flush = true);
 
 }
