@@ -30,7 +30,7 @@ class RepositoryTest extends \Flame\Tests\DoctrineTestCase
 
 	public function testDeleteWithoutFlush()
 	{
-		$entityMock = $this->mockista->create('Flame\Doctrine\Entity', array('remove'));
+		$entityMock = $this->mockista->create('Flame\Doctrine\Entities\BaseEntity', array('remove'));
 		$emMock = $this->getEmMock();
 		$emMock->expects('remove')
 			->once()
@@ -45,7 +45,7 @@ class RepositoryTest extends \Flame\Tests\DoctrineTestCase
 	public function testSetIdGenerator()
 	{
 		//TODO
-		//$entityMock = $this->mockista->create('Flame\Doctrine\Entity');
+		//$entityMock = $this->mockista->create('Flame\Doctrine\Entities\BaseEntity');
 	}
 
 }

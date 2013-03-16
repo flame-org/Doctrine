@@ -61,7 +61,7 @@ class FacadeTest extends \Flame\Tests\DoctrineTestCase
 
 	public function testSave()
 	{
-		$entityMock = $this->mockista->create('Flame\Doctrine\Entity');
+		$entityMock = $this->mockista->create('Flame\Doctrine\Entities\BaseEntity');
 		$repositoryMock = $this->mockista->create('\Flame\Doctrine\Model\Repository');
 		$repositoryMock->expects('save')
 			->once()
@@ -75,7 +75,7 @@ class FacadeTest extends \Flame\Tests\DoctrineTestCase
 
 	public function testDelete()
 	{
-		$entityMock = $this->mockista->create('Flame\Doctrine\Entity');
+		$entityMock = $this->mockista->create('Flame\Doctrine\Entities\BaseEntity');
 		$repositoryMock = $this->mockista->create('\Flame\Doctrine\Model\Repository');
 		$repositoryMock->expects('delete')
 			->once()
