@@ -25,7 +25,7 @@ abstract class IdentifiedEntity extends \Flame\Doctrine\Entities\BaseEntity
 	 * @Column(type="integer")
 	 * @GeneratedValue(strategy="AUTO")
 	 */
-	private $id;
+	protected $id;
 
 	/**
 	 * @return integer
