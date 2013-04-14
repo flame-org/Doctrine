@@ -159,3 +159,29 @@ class UnexpectedValueException extends \UnexpectedValueException implements Exce
 	}
 
 }
+
+/**
+ * @author Filip Procházka <filip@prochazka.su>
+ */
+class QueryException extends \RuntimeException implements Exception
+{
+
+    /**
+     * @var \Doctrine\ORM\Query
+     */
+    public $query;
+
+
+
+    /**
+     * @param \Exception $previous
+     * @param \Doctrine\ORM\Query $query
+     * @param string $message
+     */
+    public function __construct(\Exception $previous, \Doctrine\ORM\Query $query = NULL, $message = "")
+    {
+        parent::__construct($message ?: $previous->getMessage(), 0, $previous);
+        $this->query = $query;
+    }
+
+}
