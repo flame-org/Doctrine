@@ -1,7 +1,7 @@
 Doctrine
 ========
 
-Collection of classes for working with Doctrine2 on Flame framework
+Collection of classes for working with Doctrine2 on Kdyby/Doctrine
 
 ##Instalation
 
@@ -16,14 +16,7 @@ Collection of classes for working with Doctrine2 on Flame framework
 2. Install dependencies
 	
 ```
-	composer install/update
-```
-
-3. Register **doctrine** extension into the bootstrap.php
-
-```php
-	$doctrineExtension = new \Flame\Doctrine\Config\Extension;
-    $doctrineExtension->install($configurator);
+	composer install /update
 ```
 
 ##Usage
@@ -32,6 +25,9 @@ Collection of classes for working with Doctrine2 on Flame framework
 
 ```
 	doctrine:
-	  connection: %database%
-	  entityDirs: [%appDir%/Entity]
+		defaultRepositoryClassName: \Flame\Doctrine\EntityDao
+		autoGenerateProxyClasses: true
+		metadata:
+			Sharezone\Entity: %appDir%/Entity
+		ignoredAnnotations: [date, author]
 ```

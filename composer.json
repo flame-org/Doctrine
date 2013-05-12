@@ -1,11 +1,10 @@
 {
 	"name": "flame/doctrine",
 	"type": "library",
-    "description": "Collection of classes for working with Doctrine2 on Flame framework",
+    "description": "Collection of classes for working with Doctrine2 on Kdyby/Doctrine",
     "keywords": ["doctrine2", "doctrine", "nette", "flame", "framework", "tools"],
     "homepage": "https://github.com/flame-org/Doctrine",
     "license": "BSD-2-Clause-FreeBSD",
-    "minimum-stability":"dev",
 
     "authors": [
         {
@@ -21,12 +20,13 @@
 
 	"require": {
 		"php": ">=5.3.2",
-		"doctrine/orm": "2.3.*@stable",
-		"nette/nette": ">=2.0.1"
+		"nette/nette": ">=2.0.1",
+		"kdyby/doctrine": ">=0.9",
+        "kdyby/console": ">=1.1.1",
+        "kdyby/events": ">=1.0.1"
 	},
 
 	"require-dev": {
-		"flame/framework": "@dev",
 		"nette/tester": "@dev",
 		"janmarek/mockista": "@dev"
 	},
@@ -36,9 +36,6 @@
 	},
 
 	"autoload": {
-		"psr-0": {"Flame": ""},
-		"classmap": [
-			"Flame/Doctrine/exceptions.php"
-		]
+		"psr-0": {"Flame": ""}
 	}
 }
