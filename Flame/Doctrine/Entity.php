@@ -19,7 +19,13 @@ abstract class Entity extends IdentifiedEntity
 	 */
 	public function toArray()
 	{
-		return array_merge(array('id' => $this->getId()), get_object_vars($this));
+		$vars = get_object_vars($this);
+		foreach($vars as &$var) {
+			if($var instanceof Entity) {
+				$var = $var->toArray();
+			}
+		}
+		return array_merge(array('id' => $this->getId()), $vars);
 	}
 
 	/**
