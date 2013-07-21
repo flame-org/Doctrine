@@ -15,14 +15,17 @@ abstract class Entity extends IdentifiedEntity
 {
 
 	/**
+	 * @param bool $powerful
 	 * @return array
 	 */
-	public function toArray()
+	public function toArray($powerful = true)
 	{
 		$vars = get_object_vars($this);
-		foreach($vars as &$var) {
-			if($var instanceof Entity) {
-				$var = $var->toArray();
+		if($powerful && count($vars)) {
+			foreach($vars as &$var) {
+				if($var instanceof Entity) {
+					$var = $var->toArray();
+				}
 			}
 		}
 		return array_merge(array('id' => $this->getId()), $vars);
