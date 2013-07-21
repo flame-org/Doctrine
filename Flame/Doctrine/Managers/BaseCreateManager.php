@@ -7,21 +7,51 @@
  */
 namespace Flame\Doctrine\Managers;
 
-use Flame\Doctrine\Types\IData;
-
-abstract class BaseCreateManager extends BaseManager implements ICreateManager
+abstract class BaseCreateManager extends BaseManager
 {
 
-	/** @var  IData */
-	protected $data;
-
 	/**
-	 * @param IData $data
+	 * Initialize entity
+	 *
 	 * @return $this
 	 */
-	public function setData(IData $data)
+	public function create()
 	{
-		$this->data = $data;
+		$this->entity = $this->model->getDao()->createEntity($this->getEntityName());
+
+		if(count($desiredKeys = $this->getDesiredKeys())) {
+			foreach ($desiredKeys as $key) {
+				$this->entity->$key = $this->getDataValue($key);
+			}
+		}
+
+		if(count($optionalKeys = $this->getOptionalKeys())) {
+			foreach ($optionalKeys as $key) {
+				$this->entity->$key = $this->getDataValue($key, false);
+			}
+		}
+
 		return $this;
 	}
+
+	/**
+	 * Get name of Entity which will be initialized
+	 *
+	 * @return string
+	 */
+	abstract public function getEntityName();
+
+	/**
+	 * Get list of desired keys which will be set to entity
+	 *
+	 * @return array
+	 */
+	abstract protected function getDesiredKeys();
+
+	/**
+	 * Get list of optional keys which will be set to entity
+	 *
+	 * @return array
+	 */
+	abstract protected function getOptionalKeys();
 }

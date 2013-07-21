@@ -9,44 +9,9 @@ namespace Flame\Doctrine\Managers;
 
 use Flame\Doctrine\Entity;
 use Nette\InvalidStateException;
-use Flame\Doctrine\Types\IData;
 
 abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
 {
-
-	/** @var array  */
-	protected $allowedKeys = array();
-
-	/** @var  IData */
-	protected $data;
-
-	/**
-	 * @return \Flame\Rest\Types\ObjectData
-	 */
-	public function getData()
-	{
-		return $this->data;
-	}
-
-	/**
-	 * @param $data
-	 * @return $this
-	 */
-	public function setData(IData $data)
-	{
-		$this->data = $data;
-		return $this;
-	}
-
-	/**
-	 * @param array $keys
-	 * @return $this
-	 */
-	public function setAllowedKeys(array $keys)
-	{
-		$this->allowedKeys = $keys;
-		return $this;
-	}
 
 	/**
 	 * @param \Flame\Doctrine\Entity $entity
@@ -59,6 +24,8 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
 	}
 
 	/**
+	 * Set new values to entity
+	 *
 	 * @param Entity $entity
 	 * @return $this
 	 * @throws \Nette\InvalidStateException
@@ -67,10 +34,9 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
 	{
 		$this->updateSetUp($entity);
 
-		$data = (array) $this->data->getRaw();
-		if(count($data) && count($this->allowedKeys)) {
-			foreach ($data as $key => $value) {
-				if(in_array($key, $this->allowedKeys)) {
+		if(count($this->data) && count($allowedKeys = $this->getAllowedKeys())) {
+			foreach ($this->data as $key => $value) {
+				if(in_array($key, $allowedKeys)) {
 					$this->entity->$key = $value;
 				}
 			}
@@ -80,6 +46,8 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
 	}
 
 	/**
+	 * Setup class environment
+	 *
 	 * @param $entity
 	 * @return $this
 	 * @throws \Nette\InvalidStateException
@@ -96,5 +64,12 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
 
 		return $this;
 	}
+
+	/**
+	 * Get list of keys which will be updated
+	 *
+	 * @return array
+	 */
+	abstract public function getAllowedKeys();
 
 }
