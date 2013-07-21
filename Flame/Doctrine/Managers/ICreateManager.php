@@ -5,15 +5,10 @@
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 20.07.13
  */
-namespace Flame\Doctrine\Model;
+namespace Flame\Doctrine\Managers;
 
-interface ICreateManager extends ISaveManager
+interface ICreateManager extends ISaveManager, IEntityManager
 {
-
-	/**
-	 * @return \Flame\Doctrine\Entity
-	 */
-	public function getEntity();
 
 	/**
 	 * @return $this

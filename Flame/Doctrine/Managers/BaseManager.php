@@ -1,32 +1,31 @@
 <?php
 /**
- * Class BaseCreateManager
+ * Class BaseManager
  *
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 20.07.13
  */
-namespace Flame\Doctrine\Model;
+namespace Flame\Doctrine\Managers;
 
-use Flame\Rest\Types\ObjectData;
+use Nette\Object;
+use Flame\Doctrine\Model\IModel;
 use Nette\InvalidStateException;
 
-abstract class BaseCreateManager extends BaseManager implements ICreateManager
+abstract class BaseManager extends Object implements IManager, IEntityManager
 {
 
 	/** @var  \Flame\Doctrine\Entity */
 	protected $entity;
 
-	/** @var  ObjectData */
-	protected $data;
+	/** @var \Flame\Doctrine\Model\IModel  */
+	protected $model;
 
 	/**
-	 * @param $data
-	 * @return $this
+	 * @param IModel $model
 	 */
-	public function setData($data)
+	public function __construct(IModel $model)
 	{
-		$this->data = new ObjectData($data);
-		return $this;
+		$this->model = $model;
 	}
 
 	/**
@@ -38,6 +37,14 @@ abstract class BaseCreateManager extends BaseManager implements ICreateManager
 	}
 
 	/**
+	 * @return IModel
+	 */
+	public function getModel()
+	{
+		return $this->model;
+	}
+
+	/**
 	 * @param bool $flush
 	 * @return $this
 	 * @throws \Nette\InvalidStateException
@@ -45,7 +52,7 @@ abstract class BaseCreateManager extends BaseManager implements ICreateManager
 	public function save($flush = true)
 	{
 		if($this->entity === null) {
-			throw new InvalidStateException('Call create method first');
+			throw new InvalidStateException('Set "' . __CLASS__ .'"::$entity first');
 		}
 
 		if($flush === true) {
