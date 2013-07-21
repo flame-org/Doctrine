@@ -19,6 +19,13 @@ interface IData
 	public function get($name);
 
 	/**
+	 * @param $name
+	 * @param $value
+	 * @return $this
+	 */
+	public function set($name, $value);
+
+	/**
 	 * @param string $name
 	 * @param null $default
 	 * @return mixed
