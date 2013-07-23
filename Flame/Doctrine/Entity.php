@@ -27,6 +27,15 @@ abstract class Entity extends IdentifiedEntity
 					$var = $var->toArray();
 				}elseif($var instanceof \Traversable) {
 					$var = iterator_to_array($var);
+					if(count($var)) {
+						$var = array_map(function ($item) {
+							if($item instanceof Entity) {
+								$item = $item->toArray();
+							}
+
+							return $item;
+						}, $var);
+					}
 				}
 			}
 		}
