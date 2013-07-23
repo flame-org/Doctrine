@@ -10,7 +10,7 @@ namespace Flame\Doctrine\Model;
 use Flame\Doctrine\EntityDao;
 use Nette\Object;
 
-class BaseModel extends Object implements IModel
+abstract class BaseModel extends Object implements IModel
 {
 
 	/** @var  \Flame\Doctrine\EntityDao */
