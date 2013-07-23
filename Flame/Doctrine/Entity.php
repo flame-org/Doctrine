@@ -18,13 +18,15 @@ abstract class Entity extends IdentifiedEntity
 	 * @param bool $powerful
 	 * @return array
 	 */
-	public function toArray($powerful = true)
+	public function toArray($powerful = false)
 	{
 		$vars = get_object_vars($this);
 		if($powerful && count($vars)) {
 			foreach($vars as &$var) {
 				if($var instanceof Entity) {
 					$var = $var->toArray();
+				}elseif($var instanceof \Traversable) {
+					$var = iterator_to_array($var);
 				}
 			}
 		}
