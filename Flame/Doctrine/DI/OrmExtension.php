@@ -20,6 +20,10 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 	{
 		$this->managerDefaults = array_merge($this->managerDefaults, $this->defaults);
 
+		$builder = $this->getContainerBuilder();
+		$builder->addDefinition($this->prefix('entities'))
+			->setClass('\Flame\Doctrine\Utils\Entities');
+
 		parent::loadConfiguration();
 	}
 

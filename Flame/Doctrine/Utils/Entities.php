@@ -17,7 +17,7 @@ class Entities extends Object
 	 * @param $entity
 	 * @return array
 	 */
-	public static function toArray($entity)
+	public function toArray($entity)
 	{
 		if($entity instanceof Entity) {
 			return $entity->toArray();
