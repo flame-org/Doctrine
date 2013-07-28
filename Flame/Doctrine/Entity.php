@@ -15,31 +15,57 @@ abstract class Entity extends IdentifiedEntity
 {
 
 	/**
-	 * @param bool $powerful
+	 * @param array $keys
 	 * @return array
 	 */
-	public function toArray($powerful = false)
+	public function getValues(array $keys)
 	{
-		$vars = get_object_vars($this);
-		if($powerful && count($vars)) {
+		$result = array();
+		if(count($keys)) {
+			foreach ($keys as $key) {
+				$r = $this->$key;
+				if($r instanceof \Traversable) {
+					$r = iterator_to_array($r);
+				}
+
+				$result[$key] = $r;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function toArray()
+	{
+		return array_merge(array('id' => $this->getId()), get_object_vars($this));
+	}
+
+	/**
+	 *
+	 */
+	public function toFullArray()
+	{
+		$vars = $this->toArray();
+		if(count($vars)) {
 			foreach($vars as &$var) {
 				if($var instanceof Entity) {
-					$var = $var->toArray();
+					$var = $var->toFullArray();
 				}elseif($var instanceof \Traversable) {
-					$var = iterator_to_array($var);
-					if(count($var)) {
-						$var = array_map(function ($item) {
-							if($item instanceof Entity) {
-								$item = $item->toArray();
-							}
+					$var = array_map(function ($item) {
+						if($item instanceof Entity) {
+							$item = $item->toArray();
+						}
 
-							return $item;
-						}, $var);
-					}
+						return $item;
+					}, iterator_to_array($var));
 				}
 			}
 		}
-		return array_merge(array('id' => $this->getId()), $vars);
+
+		return $vars;
 	}
 
 	/**
