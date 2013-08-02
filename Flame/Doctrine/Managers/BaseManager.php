@@ -12,6 +12,12 @@ use Nette\Object;
 use Flame\Doctrine\Model\IModel;
 use Nette\InvalidStateException;
 
+/**
+ * Class BaseManager
+ *
+ * @package Flame\Doctrine\Managers
+ * @method \Flame\ArrayHash getData
+ */
 abstract class BaseManager extends Object implements IManager, IEntityManager
 {
 
@@ -31,14 +37,6 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 	{
 		$this->model = $model;
 		$this->data = new ArrayHash;
-	}
-
-	/**
-	 * @return ArrayHash
-	 */
-	public function getData()
-	{
-		return $this->data;
 	}
 
 	/**
