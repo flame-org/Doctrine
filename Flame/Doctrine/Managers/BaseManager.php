@@ -7,7 +7,7 @@
  */
 namespace Flame\Doctrine\Managers;
 
-use Nette\ArrayHash;
+use Flame\ArrayHash;
 use Nette\Object;
 use Flame\Doctrine\Model\IModel;
 use Nette\InvalidStateException;
@@ -15,7 +15,7 @@ use Nette\InvalidStateException;
 abstract class BaseManager extends Object implements IManager, IEntityManager
 {
 
-	/** @var \Nette\ArrayHash  */
+	/** @var \Flame\ArrayHash  */
 	protected $data;
 
 	/** @var  \Flame\Doctrine\Entity */
@@ -30,33 +30,15 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 	public function __construct(IModel $model)
 	{
 		$this->model = $model;
-
-		$this->data = ArrayHash::from(array());
+		$this->data = new ArrayHash;
 	}
 
 	/**
-	 * @return \Nette\ArrayHash
+	 * @return ArrayHash
 	 */
 	public function getData()
 	{
 		return $this->data;
-	}
-
-	/**
-	 * @param $name
-	 * @param bool $need
-	 * @return mixed
-	 * @throws \Nette\InvalidStateException
-	 */
-	public function getDataValue($name, $need = true)
-	{
-		if(isset($this->data->$name)) {
-			return $this->data->$name;
-		}
-
-		if($need === true) {
-			throw new InvalidStateException('Missing value for key: "' . $name . '"');
-		}
 	}
 
 	/**
@@ -96,7 +78,7 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 	}
 
 	/**
-	 * @param \Nette\ArrayHash|array|object $data
+	 * @param ArrayHash|array|object $data
 	 * @return $this
 	 */
 	public function setData($data)

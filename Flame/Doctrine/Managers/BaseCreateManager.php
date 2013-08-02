@@ -21,13 +21,13 @@ abstract class BaseCreateManager extends BaseManager
 
 		if(count($desiredKeys = $this->getDesiredKeys())) {
 			foreach ($desiredKeys as $key) {
-				$this->entity->$key = $this->getDataValue($key);
+				$this->entity->$key = $this->data->getValue($key);
 			}
 		}
 
 		if(count($optionalKeys = $this->getOptionalKeys())) {
 			foreach ($optionalKeys as $key) {
-				$this->entity->$key = $this->getDataValue($key, false);
+				$this->entity->$key = $this->data->getValue($key, false);
 			}
 		}
 
