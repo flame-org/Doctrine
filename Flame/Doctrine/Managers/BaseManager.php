@@ -50,14 +50,6 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 	}
 
 	/**
-	 * @return IModel
-	 */
-	public function getModel()
-	{
-		return $this->model;
-	}
-
-	/**
 	 * @param bool $flush
 	 * @return $this
 	 * @throws \Nette\InvalidStateException

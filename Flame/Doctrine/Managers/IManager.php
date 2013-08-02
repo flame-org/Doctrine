@@ -7,13 +7,7 @@
  */
 namespace Flame\Doctrine\Managers;
 
-use Flame\Doctrine\Model\IModel;
-
 interface IManager
 {
 
-	/**
-	 * @return IModel
-	 */
-	public function getModel();
 }
