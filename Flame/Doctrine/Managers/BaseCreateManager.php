@@ -18,19 +18,8 @@ abstract class BaseCreateManager extends BaseManager
 	public function create()
 	{
 		$this->entity = $this->model->getDao()->createEntity($this->getEntityName());
-
-		if(count($desiredKeys = $this->getDesiredKeys())) {
-			foreach ($desiredKeys as $key) {
-				$this->entity->$key = $this->data->getValue($key);
-			}
-		}
-
-		if(count($optionalKeys = $this->getOptionalKeys())) {
-			foreach ($optionalKeys as $key) {
-				$this->entity->$key = $this->data->getValue($key, false);
-			}
-		}
-
+		$this->processKeys($this->getDesiredKeys());
+		$this->processKeys($this->getOptionalKeys(), false);
 		return $this;
 	}
 

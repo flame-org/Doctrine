@@ -81,4 +81,21 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 
 		return $this;
 	}
+
+	/**
+	 * @param array $keys
+	 * @param bool $desired
+	 */
+	protected function processKeys(array $keys, $desired = true)
+	{
+		if(count($keys)) {
+			foreach ($keys as $key => $value) {
+				if(is_object($value) && $value instanceof IService) {
+					$this->entity->$key = $value->process($this->data->getValue($key, $desired));
+				}else{
+					$this->entity->$value = $this->data->getValue($value, $desired);
+				}
+			}
+		}
+	}
 }

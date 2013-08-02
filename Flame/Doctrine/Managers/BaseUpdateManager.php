@@ -14,7 +14,7 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
 {
 
 	/**
-	 * @param \Flame\Doctrine\Entity $entity
+	 * @param Entity $entity
 	 * @return $this
 	 */
 	public function setEntity(Entity $entity)
@@ -32,28 +32,6 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
 	 */
 	public function update(Entity $entity = null)
 	{
-		$this->updateSetUp($entity);
-
-		if(count($this->data) && count($allowedKeys = $this->getAllowedKeys())) {
-			foreach ($this->data as $key => $value) {
-				if(in_array($key, $allowedKeys)) {
-					$this->entity->$key = $value;
-				}
-			}
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Setup class environment
-	 *
-	 * @param $entity
-	 * @return $this
-	 * @throws \Nette\InvalidStateException
-	 */
-	protected function updateSetUp($entity)
-	{
 		if($entity !== null) {
 			$this->setEntity($entity);
 		}
@@ -61,6 +39,8 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
 		if($this->entity === null) {
 			throw new InvalidStateException('Set "' . __CLASS__ .'::$entity" first');
 		}
+
+		$this->processKeys($this->getAllowedKeys(), false);
 
 		return $this;
 	}
