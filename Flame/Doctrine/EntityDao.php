@@ -9,6 +9,7 @@
 namespace Flame\Doctrine;
 
 use Nette\Reflection\ClassType;
+use Doctrine\DBAL\LockMode;
 
 class EntityDao extends \Kdyby\Doctrine\EntityDao
 {
@@ -31,6 +32,17 @@ class EntityDao extends \Kdyby\Doctrine\EntityDao
 		$entity = $reflection->newInstanceArgs(func_get_args());
 		$this->add($entity);
 		return $entity;
+	}
+
+	/**
+	 * @param mixed $id
+	 * @param int $lockMode
+	 * @param null $lockVersion
+	 * @return object
+	 */
+	public function find($id, $lockMode = LockMode::NONE, $lockVersion = null)
+	{
+		return parent::find((int) $id, $lockMode, $lockVersion);
 	}
 
 }
