@@ -14,12 +14,23 @@ abstract class BaseCreateManager extends BaseManager
 {
 
 	/**
+	 * @return void
+	 */
+	protected function afterCreate() {}
+
+	/**
+	 * @return void
+	 */
+	protected function beforeCreate() {}
+
+	/**
 	 * Initialize entity
 	 *
 	 * @return $this
 	 */
 	public function create()
 	{
+		$this->beforeCreate();
 		$this->entity = $this->model->getDao()->createEntity($this->getEntityName());
 
 		if($this instanceof IDesiredKeys) {
@@ -29,6 +40,8 @@ abstract class BaseCreateManager extends BaseManager
 		if($this instanceof IOptionalKeys) {
 			$this->processKeys($this->getOptionalKeys(), false);
 		}
+
+		$this->afterCreate();
 
 		return $this;
 	}
