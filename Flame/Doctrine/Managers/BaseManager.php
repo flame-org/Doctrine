@@ -74,7 +74,7 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 	public function setData($data)
 	{
 		if(!$data instanceof ArrayHash) {
-			$this->data = ArrayHash::from($data);
+			$this->data = ArrayHash::from((array) $data);
 		}else{
 			$this->data = $data;
 		}
