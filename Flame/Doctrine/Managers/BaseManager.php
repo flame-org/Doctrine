@@ -90,7 +90,7 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 	{
 		if(count($keys)) {
 			foreach ($keys as $key => $value) {
-				if(is_object($value) && $value instanceof IService) {
+				if($value instanceof IService) {
 					$this->entity->$key = $value->process($this->data->getValue($key, $desired));
 				}else{
 					$this->entity->$value = $this->data->getValue($value, $desired);
