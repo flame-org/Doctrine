@@ -8,9 +8,10 @@
 namespace Flame\Doctrine\Managers;
 
 use Flame\Doctrine\Entity;
+use Flame\Doctrine\Keys\IAllowedKeys;
 use Nette\InvalidStateException;
 
-abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
+abstract class BaseUpdateManager extends BaseManager implements IUpdateManager, IAllowedKeys
 {
 
 	/**
@@ -41,15 +42,6 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager
 		}
 
 		$this->processKeys($this->getAllowedKeys(), false);
-
 		return $this;
 	}
-
-	/**
-	 * Get list of keys which will be updated
-	 *
-	 * @return array
-	 */
-	abstract public function getAllowedKeys();
-
 }

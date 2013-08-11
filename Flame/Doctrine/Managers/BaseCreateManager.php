@@ -7,6 +7,9 @@
  */
 namespace Flame\Doctrine\Managers;
 
+use Flame\Doctrine\Keys\IDesiredKeys;
+use Flame\Doctrine\Keys\IOptionalKeys;
+
 abstract class BaseCreateManager extends BaseManager
 {
 
@@ -18,8 +21,15 @@ abstract class BaseCreateManager extends BaseManager
 	public function create()
 	{
 		$this->entity = $this->model->getDao()->createEntity($this->getEntityName());
-		$this->processKeys($this->getDesiredKeys());
-		$this->processKeys($this->getOptionalKeys(), false);
+
+		if($this instanceof IDesiredKeys) {
+			$this->processKeys($this->getDesiredKeys());
+		}
+
+		if($this instanceof IOptionalKeys) {
+			$this->processKeys($this->getOptionalKeys(), false);
+		}
+
 		return $this;
 	}
 
@@ -29,18 +39,4 @@ abstract class BaseCreateManager extends BaseManager
 	 * @return string
 	 */
 	abstract public function getEntityName();
-
-	/**
-	 * Get list of desired keys which will be set to entity
-	 *
-	 * @return array
-	 */
-	abstract protected function getDesiredKeys();
-
-	/**
-	 * Get list of optional keys which will be set to entity
-	 *
-	 * @return array
-	 */
-	abstract protected function getOptionalKeys();
 }
