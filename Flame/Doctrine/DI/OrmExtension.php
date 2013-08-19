@@ -12,8 +12,7 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 
 	public $defaults = array(
 		'defaultRepositoryClassName' => 'Flame\Doctrine\EntityDao',
-		'autoGenerateProxyClasses' => true,
-		'ignoredAnnotations' => array('date', 'author')
+		'autoGenerateProxyClasses' => true
 	);
 
 	public function loadConfiguration()
