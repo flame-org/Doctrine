@@ -14,16 +14,6 @@ abstract class BaseCreateManager extends BaseManager
 {
 
 	/**
-	 * @return void
-	 */
-	protected function afterCreate() {}
-
-	/**
-	 * @return void
-	 */
-	protected function beforeCreate() {}
-
-	/**
 	 * Initialize entity
 	 *
 	 * @return $this
@@ -52,4 +42,14 @@ abstract class BaseCreateManager extends BaseManager
 	 * @return string
 	 */
 	abstract public function getEntityName();
+
+	/**
+	 * @return void
+	 */
+	protected function afterCreate() {}
+
+	/**
+	 * @return void
+	 */
+	protected function beforeCreate() {}
 }
