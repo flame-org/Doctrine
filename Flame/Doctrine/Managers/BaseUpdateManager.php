@@ -41,7 +41,19 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager, 
 			throw new InvalidStateException('Set "' . __CLASS__ .'::$entity" first');
 		}
 
+		$this->beforeUpdate();
 		$this->processKeys($this->getAllowedKeys(), false);
+		$this->afterUpdate();
 		return $this;
 	}
+
+	/**
+	 * @return void
+	 */
+	protected function beforeUpdate(){}
+
+	/**
+	 * @return void
+	 */
+	protected function afterUpdate(){}
 }
