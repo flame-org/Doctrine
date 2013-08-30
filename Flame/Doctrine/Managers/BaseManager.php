@@ -91,7 +91,8 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 		if(count($keys)) {
 			foreach ($keys as $key => $value) {
 				// Skip if key is not desired and is not set in data set
-				if(is_numeric($key) && $desired === false && !isset($this->data->$value)) {
+				if((is_numeric($key) && $desired === false && !isset($this->data->$value)) ||
+					(is_string($key) && $desired === false && !isset($this->data->$key))) {
 					continue;
 				}
 
