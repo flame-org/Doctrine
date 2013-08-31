@@ -21,7 +21,7 @@ abstract class BaseCreateManager extends BaseManager
 	public function create()
 	{
 		$this->beforeCreate();
-		$this->entity = $this->model->getDao()->createEntity($this->getEntityName());
+		$this->entity = $this->model->getDao()->createEntity();
 
 		if($this instanceof IDesiredKeys) {
 			$this->processKeys($this->getDesiredKeys());
@@ -35,13 +35,6 @@ abstract class BaseCreateManager extends BaseManager
 
 		return $this;
 	}
-
-	/**
-	 * Get name of Entity which will be initialized
-	 *
-	 * @return string
-	 */
-	abstract public function getEntityName();
 
 	/**
 	 * @return void
