@@ -10,7 +10,7 @@ namespace Flame\Doctrine\Managers;
 use Flame\Doctrine\Keys\IDesiredKeys;
 use Flame\Doctrine\Keys\IOptionalKeys;
 
-abstract class BaseCreateManager extends BaseManager
+abstract class BaseCreateManager extends BaseManager implements ICreateManager
 {
 
 	/**
