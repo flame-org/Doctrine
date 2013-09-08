@@ -10,4 +10,8 @@ namespace Flame\Doctrine\Managers;
 interface IManager
 {
 
+	/**
+	 * @return \Flame\Doctrine\Model\IModel
+	 */
+	public function getModel();
 }

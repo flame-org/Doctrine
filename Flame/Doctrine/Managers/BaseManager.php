@@ -8,8 +8,9 @@
 namespace Flame\Doctrine\Managers;
 
 use Flame\ArrayHash;
+use Flame\Doctrine\Entity;
+use Flame\Doctrine\IEntityProvider;
 use Nette\Object;
-use Flame\Doctrine\Model\IModel;
 use Nette\InvalidStateException;
 
 /**
@@ -18,50 +19,27 @@ use Nette\InvalidStateException;
  * @package Flame\Doctrine\Managers
  * @method \Flame\ArrayHash getData
  */
-abstract class BaseManager extends Object implements IManager, IEntityManager
+abstract class BaseManager extends Object implements IManager, IEntityProvider
 {
 
 	/** @var \Flame\ArrayHash  */
 	protected $data;
 
-	/** @var  \Flame\Doctrine\Entity */
-	protected $entity;
-
-	/** @var \Flame\Doctrine\Model\IModel  */
-	protected $model;
-
-	/**
-	 * @param IModel $model
-	 */
-	public function __construct(IModel $model)
+	public function __construct()
 	{
-		$this->model = $model;
 		$this->data = new ArrayHash;
-	}
-
-	/**
-	 * @return \Flame\Doctrine\Entity
-	 */
-	public function getEntity()
-	{
-		return $this->entity;
 	}
 
 	/**
 	 * @param bool $flush
 	 * @return $this
-	 * @throws \Nette\InvalidStateException
 	 */
 	public function save($flush = true)
 	{
-		if($this->entity === null) {
-			throw new InvalidStateException('Set "' . __CLASS__ .'"::$entity first');
-		}
-
 		if($flush === true) {
-			$this->model->getDao()->save($this->entity);
+			$this->getModel()->getDao()->save($this->getEntity());
 		}else{
-			$this->model->getDao()->add($this->entity);
+			$this->getModel()->getDao()->add($this->getEntity());
 		}
 
 		return $this;
@@ -85,9 +63,14 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 	/**
 	 * @param array $keys
 	 * @param bool $desired
+	 * @throws \Nette\InvalidStateException
 	 */
 	protected function processKeys(array $keys, $desired = true)
 	{
+		if(!$this->getEntity() instanceof Entity) {
+			throw new InvalidStateException('Invalid Entity given');
+		}
+
 		if(count($keys)) {
 			foreach ($keys as $key => $value) {
 				// Skip if key is not desired and is not set in data set
@@ -97,11 +80,11 @@ abstract class BaseManager extends Object implements IManager, IEntityManager
 				}
 
 				if($value instanceof IService) {
-					$this->entity->$key = $value->process($this->data->getValue($key, $desired));
+					$this->getEntity()->$key = $value->process($this->data->getValue($key, $desired));
 				}elseif($value instanceof \Closure) {
-					$this->entity->$key = call_user_func($value, $this->data->getValue($key, $desired));
+					$this->getEntity()->$key = call_user_func($value, $this->data->getValue($key, $desired));
 				}else{
-					$this->entity->$value = $this->data->getValue($value, $desired);
+					$this->getEntity()->$value = $this->data->getValue($value, $desired);
 				}
 			}
 		}

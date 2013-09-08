@@ -7,11 +7,15 @@
  */
 namespace Flame\Doctrine\Managers;
 
-interface IEntityManager
+use Flame\Doctrine\Entity;
+use Flame\Doctrine\IEntityProvider;
+
+interface IEntityManager extends IEntityProvider
 {
 
 	/**
-	 * @return \Flame\Doctrine\Entity
+	 * @param Entity $entity
+	 * @return $this
 	 */
-	public function getEntity();
+	public function setEntity(Entity $entity);
 }

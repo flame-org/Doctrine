@@ -7,11 +7,17 @@
  */
 namespace Flame\Doctrine\Managers;
 
-interface ICreateManager extends ISaveManager, IEntityManager
+interface ICreateManager extends IManager
 {
 
 	/**
 	 * @return $this
 	 */
 	public function create();
+
+	/**
+	 * @param bool $flush
+	 * @return $this
+	 */
+	public function save($flush = true);
 }

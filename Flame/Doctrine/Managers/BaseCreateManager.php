@@ -13,6 +13,17 @@ use Flame\Doctrine\Keys\IOptionalKeys;
 abstract class BaseCreateManager extends BaseManager implements ICreateManager
 {
 
+	/** @var  \Flame\Doctrine\Entity */
+	private $entity;
+
+	/**
+	 * @return \Flame\Doctrine\Entity
+	 */
+	public function getEntity()
+	{
+		return $this->entity;
+	}
+
 	/**
 	 * Initialize entity
 	 *
@@ -20,8 +31,9 @@ abstract class BaseCreateManager extends BaseManager implements ICreateManager
 	 */
 	public function create()
 	{
+		$this->entity = $this->getModel()->getDao()->createEntity();
+
 		$this->beforeCreate();
-		$this->entity = $this->model->getDao()->createEntity();
 
 		if($this instanceof IDesiredKeys) {
 			$this->processKeys($this->getDesiredKeys());

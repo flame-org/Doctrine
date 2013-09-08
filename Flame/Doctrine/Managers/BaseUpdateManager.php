@@ -14,6 +14,17 @@ use Nette\InvalidStateException;
 abstract class BaseUpdateManager extends BaseManager implements IUpdateManager, IAllowedKeys
 {
 
+	/** @var  \Flame\Doctrine\Entity */
+	private $entity;
+
+	/**
+	 * @return \Flame\Doctrine\Entity
+	 */
+	public function getEntity()
+	{
+		return $this->entity;
+	}
+
 	/**
 	 * @param Entity $entity
 	 * @return $this
@@ -27,18 +38,14 @@ abstract class BaseUpdateManager extends BaseManager implements IUpdateManager, 
 	/**
 	 * Set new values to entity
 	 *
-	 * @param Entity $entity
+	 * @param null $id
 	 * @return $this
 	 * @throws \Nette\InvalidStateException
 	 */
-	public function update(Entity $entity = null)
+	public function update($id = null)
 	{
-		if($entity !== null) {
-			$this->setEntity($entity);
-		}
-
-		if($this->entity === null) {
-			throw new InvalidStateException('Set "' . __CLASS__ .'::$entity" first');
+		if($id !== null) {
+			$this->setEntity($this->getModel()->getDao()->find((int) $id));
 		}
 
 		$this->beforeUpdate();

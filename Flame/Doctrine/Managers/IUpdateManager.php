@@ -8,14 +8,18 @@
 
 namespace Flame\Doctrine\Managers;
 
-use Flame\Doctrine\Entity;
-
-interface IUpdateManager extends ISaveManager, IEntityManager
+interface IUpdateManager extends IManager
 {
 
 	/**
-	 * @param Entity $entity
+	 * @param int|string $id
 	 * @return $this
 	 */
-	public function update(Entity $entity = null);
+	public function update($id = null);
+
+	/**
+	 * @param bool $flush
+	 * @return $this
+	 */
+	public function save($flush = true);
 }
