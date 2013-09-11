@@ -7,7 +7,7 @@
  */
 namespace Flame\Doctrine\Managers;
 
-interface IDeleteManager extends IManager
+interface IDeleteManager
 {
 
 	/**

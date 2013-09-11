@@ -22,6 +22,9 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 		$builder->addDefinition($this->prefix('entities'))
 			->setClass('\Flame\Doctrine\Utils\Entities');
 
+		$builder->addDefinition($this->prefix('entityManager'))
+			->setClass('\Flame\Doctrine\Managers\EntityManager');
+
 		parent::loadConfiguration();
 	}
 

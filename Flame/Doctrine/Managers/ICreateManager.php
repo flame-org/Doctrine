@@ -7,7 +7,7 @@
  */
 namespace Flame\Doctrine\Managers;
 
-interface ICreateManager extends IManager
+interface ICreateManager
 {
 
 	/**

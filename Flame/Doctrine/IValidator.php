@@ -1,18 +1,18 @@
 <?php
 /**
- * Class ICreateService
+ * Class IValidator
  *
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 02.08.13
  */
-namespace Flame\Doctrine\Managers;
+namespace Flame\Doctrine;
 
-interface IService
+interface IValidator
 {
 
 	/**
 	 * @param $data
 	 * @return mixed
 	 */
-	public function process($data);
+	public function validate($data);
 } 

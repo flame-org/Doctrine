@@ -19,7 +19,7 @@ use Nette\InvalidStateException;
  * @package Flame\Doctrine\Managers
  * @method \Flame\ArrayHash getData
  */
-abstract class BaseManager extends Object implements IManager, IEntityProvider
+abstract class BaseManager extends Object implements IEntityProvider
 {
 
 	/** @var \Flame\ArrayHash  */
@@ -79,7 +79,7 @@ abstract class BaseManager extends Object implements IManager, IEntityProvider
 					continue;
 				}
 
-				if($value instanceof IService) {
+				if($value instanceof IValidator) {
 					$this->getEntity()->$key = $value->process($this->data->getValue($key, $desired));
 				}elseif($value instanceof \Closure) {
 					$this->getEntity()->$key = call_user_func($value, $this->data->getValue($key, $desired));

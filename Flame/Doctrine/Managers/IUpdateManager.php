@@ -8,7 +8,7 @@
 
 namespace Flame\Doctrine\Managers;
 
-interface IUpdateManager extends IManager
+interface IUpdateManager
 {
 
 	/**

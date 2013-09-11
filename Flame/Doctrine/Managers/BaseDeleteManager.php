@@ -11,7 +11,7 @@ use Flame\Doctrine\Entity;
 use Nette\InvalidStateException;
 use Nette\Object;
 
-abstract class BaseDeleteManager extends Object implements IDeleteManager, IEntityManager
+abstract class BaseDeleteManager extends Object implements IDeleteManager
 {
 
 	/** @var \Flame\Doctrine\Entity  */
