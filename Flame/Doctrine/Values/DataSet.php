@@ -7,8 +7,7 @@
  */
 namespace Flame\Doctrine\Values;
 
-use Flame\Doctrine\IValidator;
-use Nette\DI\Container;
+use Flame\Doctrine\DI\Context;
 use Nette\InvalidStateException;
 use Nette\Object;
 use Nette\Utils\Validators;
@@ -16,16 +15,17 @@ use Nette\Utils\Validators;
 abstract class DataSet extends Object implements IDataSet
 {
 
-	/** @var  Container */
+	/** @var  Context */
 	private $context;
 
 	/**
-	 * @param Container $context
+	 * @param Context $context
 	 */
-	function __construct(Container $context)
+	function __construct(Context $context)
 	{
 		$this->context = $context;
 	}
+
 
 	/**
 	 * @param $values
@@ -50,9 +50,9 @@ abstract class DataSet extends Object implements IDataSet
 
 			$value = $values[$property->name];
 			if($class = $property->getAnnotation('validator')) {
-				$value = $this->getValidator($class)->validate($value);
+				$value = $this->context->getValidator($class)->validate($value);
 			}
-			
+
 			if($value === null) {
 				continue;
 			}
@@ -84,20 +84,5 @@ abstract class DataSet extends Object implements IDataSet
 		}
 
 		return $valid;
-	}
-
-	/**
-	 * @param $class
-	 * @return IValidator
-	 * @throws \Nette\InvalidStateException
-	 */
-	private function getValidator($class)
-	{
-		$validator = $this->context->getByType($class);
-		if($validator instanceof IValidator) {
-			return $validator;
-		}
-
-		throw new InvalidStateException('Object "' . $class . '" is not instance of Flame\Doctrine\IValidator');
 	}
 }
