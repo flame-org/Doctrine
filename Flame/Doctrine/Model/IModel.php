@@ -7,12 +7,9 @@
  */
 namespace Flame\Doctrine\Model;
 
-interface IModel
-{
+use Flame\Doctrine\IEntityDaoProvider;
 
-	/**
-	 * @return \Flame\Doctrine\EntityDao
-	 */
-	public function getDao();
+interface IModel extends IEntityDaoProvider
+{
 
 }

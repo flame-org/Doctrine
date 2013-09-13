@@ -7,17 +7,16 @@
  */
 namespace Flame\Doctrine;
 
-use Flame\Doctrine\Managers\IEntityCreator;
 use Flame\Doctrine\Values\IDataSet;
 
 interface IManager
 {
 
 	/**
-	 * @param IEntityCreator $creator
+	 * @param IDataSet $values
 	 * @return \Flame\Doctrine\Entity
 	 */
-	public function create(IEntityCreator $creator);
+	public function create(IDataSet $values);
 
 	/**
 	 * @param IDataSet $values
@@ -36,5 +35,11 @@ interface IManager
 	 * @param bool $flush
 	 * @return $this
 	 */
-	public function setFlushMode($flush);
+	public function setFlush($flush);
+
+	/**
+	 * @param IEntityDaoProvider $provider
+	 * @return $this
+	 */
+	public function setDaoProvider(IEntityDaoProvider $provider);
 }

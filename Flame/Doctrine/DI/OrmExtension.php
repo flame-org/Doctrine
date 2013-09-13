@@ -28,6 +28,12 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 		$builder->addDefinition($this->prefix('context'))
 			->setClass('\Flame\Doctrine\DI\Context');
 
+		$builder->addDefinition($this->prefix('creatorFactory'))
+			->setClass('Flame\Doctrine\Crud\Create\EntityCreatorFactory');
+
+		$builder->addDefinition($this->prefix('deleterFactory'))
+			->setClass('Flame\Doctrine\Crud\Delete\EntityDeleterFactory');
+
 		parent::loadConfiguration();
 	}
 

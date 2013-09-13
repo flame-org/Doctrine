@@ -7,9 +7,13 @@
  */
 namespace Flame\Doctrine\Managers;
 
+use Flame\Doctrine\Crud\Create\IEntityCreatorFactory;
 use Flame\Doctrine\Entity;
+use Flame\Doctrine\IEntityDaoProvider;
 use Flame\Doctrine\IManager;
 use Flame\Doctrine\Values\IDataSet;
+use Flame\Doctrine\Crud\Delete\IEntityDeleterFactory;
+use Nette\InvalidStateException;
 use Nette\Object;
 
 class EntityManager extends Object implements IManager
@@ -18,19 +22,35 @@ class EntityManager extends Object implements IManager
 	/** @var bool  */
 	private $flush = true;
 
+	/** @var  IEntityDaoProvider */
+	private $daoProvider;
+
+	/** @var \Flame\Doctrine\Crud\Create\IEntityCreatorFactory  */
+	private $creatorFactory;
+
+	/** @var \Flame\Doctrine\Crud\Delete\IEntityDeleterFactory  */
+	private $deleterFactory;
+
+	private $updaterFactory;
+
+	function __construct(IEntityCreatorFactory $creatorFactory, IEntityDeleterFactory $deleterFactory/**, $updaterFactory*/)
+	{
+		$this->creatorFactory = $creatorFactory;
+		$this->deleterFactory = $deleterFactory;
+//		$this->updaterFactory = $updaterFactory;
+	}
+
+
 	/**
-	 * @param IEntityCreator $creator
+	 * @param IDataSet $values
 	 * @return Entity
 	 */
-	public function create(IEntityCreator $creator)
+	public function create(IDataSet $values)
 	{
-		$entity = $creator->create();
-
-		if($this->flush === true) {
-			$creator->getDao()->save();
-		}
-
-		return $entity;
+		return $this->creatorFactory
+			->createEntityCreator($this->getDao())
+			->setFlush($this->flush)
+			->create($values);
 	}
 
 	/**
@@ -48,27 +68,41 @@ class EntityManager extends Object implements IManager
 	 */
 	public function delete($entity)
 	{
-		if(!$entity instanceof Entity) {
-			$entity = $this->dao->find((int) $entity);
-		}
-
-		try {
-
-			$this->dao->delete($entity, $this->flush);
-			return true;
-
-		}catch (\Exception $ex) {
-			return false;
-		}
+		return $this->deleterFactory
+			->createEntityDeleter($this->getDao())
+			->delete($entity);
 	}
 
 	/**
 	 * @param bool $flush
 	 * @return $this
 	 */
-	public function setFlushMode($flush)
+	public function setFlush($flush)
 	{
 		$this->flush = (bool) $flush;
 		return $this;
+	}
+
+	/**
+	 * @param IEntityDaoProvider $provider
+	 * @return $this
+	 */
+	public function setDaoProvider(IEntityDaoProvider $provider)
+	{
+		$this->daoProvider = $provider;
+		return $this;
+	}
+
+	/**
+	 * @return \Flame\Doctrine\EntityDao
+	 * @throws \Nette\InvalidStateException
+	 */
+	protected function getDao()
+	{
+		if($this->daoProvider === null) {
+			throw new InvalidStateException('Please set EntityDaoProvider for manager ' . __CLASS__);
+		}
+
+		return $this->daoProvider->getDao();
 	}
 }
