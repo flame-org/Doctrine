@@ -51,6 +51,7 @@ class EntityCreator extends Object implements IEntityCreator
 			$entity->$key = $value;
 		}
 
+		$this->getDao()->add($entity);
 		$this->afterCreate($entity);
 
 		return $entity;

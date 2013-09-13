@@ -25,7 +25,6 @@ class EntityManager extends Object implements IManager
 	public function create(IEntityCreator $creator)
 	{
 		$entity = $creator->create();
-		$creator->getDao()->add($entity);
 
 		if($this->flush === true) {
 			$creator->getDao()->save();
