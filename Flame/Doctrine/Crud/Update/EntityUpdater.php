@@ -52,7 +52,7 @@ class EntityUpdater extends Object implements IEntityUpdater
 
 		$this->beforeUpdate($entity);
 
-		$values = $values->getValues();
+		$values = $values->getEditableValues();
 		foreach ($values as $key => $value) {
 			$entity->$key = $value;
 		}

@@ -20,4 +20,9 @@ interface IDataSet
 	 * @return array
 	 */
 	public function getValues();
+
+	/**
+	 * @return array
+	 */
+	public function getEditableValues();
 }

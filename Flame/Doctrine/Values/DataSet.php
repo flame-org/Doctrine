@@ -29,7 +29,6 @@ abstract class DataSet extends Object implements IDataSet
 
 	/**
 	 * @param $values
-	 * @throws InvalidStateException
 	 * @return $this
 	 */
 	public function setValues($values)
@@ -38,11 +37,6 @@ abstract class DataSet extends Object implements IDataSet
 
 		foreach ($properties as $property) {
 			$property->setAccessible(true);
-
-			$isRequired = $property->getAnnotation('required');
-			if($isRequired && !isset($values[$property->name])) {
-				throw new InvalidStateException('Missing desired key "' . $property->name . '"');
-			}
 
 			if(!isset($values[$property->name])) {
 				continue;
@@ -53,15 +47,13 @@ abstract class DataSet extends Object implements IDataSet
 				$value = $this->context->getValidator($class)->validate($value);
 			}
 
-			if($value === null) {
-				continue;
-			}
+			if($value !== null) {
+				if($type = $property->getAnnotation('var')) {
+					Validators::assert($value, $type);
+				}
 
-			if($type = $property->getAnnotation('var')) {
-				Validators::assert($value, $type);
+				$property->setValue($this, $value);
 			}
-
-			$property->setValue($this, $value);
 		}
 
 		return $this;
@@ -70,6 +62,7 @@ abstract class DataSet extends Object implements IDataSet
 
 	/**
 	 * @return array
+	 * @throws \Nette\InvalidStateException
 	 */
 	public function getValues()
 	{
@@ -77,6 +70,33 @@ abstract class DataSet extends Object implements IDataSet
 		$valid = array();
 		foreach ($vars as $var) {
 			$var->setAccessible(true);
+			$value = $var->getValue($this);
+
+			if($var->getAnnotation('required') && $value === null) {
+				throw new InvalidStateException('Missing desired key "' . $var->name . '"');
+			}
+
+			if($value !== null) {
+				$valid[$var->name] = $value;
+			}
+		}
+
+		return $valid;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getEditableValues()
+	{
+		$vars = $this->getReflection()->getProperties();
+		$valid = array();
+		foreach ($vars as $var) {
+			$var->setAccessible(true);
+			if(!$var->getAnnotation('editable')) {
+				continue;
+			}
+
 			$value = $var->getValue($this);
 			if($value !== null) {
 				$valid[$var->name] = $value;
