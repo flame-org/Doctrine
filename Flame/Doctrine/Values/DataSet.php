@@ -10,6 +10,7 @@ namespace Flame\Doctrine\Values;
 use Flame\Doctrine\DI\Context;
 use Nette\InvalidStateException;
 use Nette\Object;
+use Nette\Reflection\Property;
 use Nette\Utils\Validators;
 
 abstract class DataSet extends Object implements IDataSet
@@ -26,7 +27,6 @@ abstract class DataSet extends Object implements IDataSet
 		$this->context = $context;
 	}
 
-
 	/**
 	 * @param $values
 	 * @return $this
@@ -38,27 +38,13 @@ abstract class DataSet extends Object implements IDataSet
 		foreach ($properties as $property) {
 			$property->setAccessible(true);
 
-			if(!isset($values[$property->name])) {
-				continue;
-			}
-
-			$value = $values[$property->name];
-			if($class = $property->getAnnotation('validator')) {
-				$value = $this->context->getValidator($class)->validate($value);
-			}
-
-			if($value !== null) {
-				if($type = $property->getAnnotation('var')) {
-					Validators::assert($value, $type);
-				}
-
-				$property->setValue($this, $value);
+			if(isset($values[$property->name])) {
+				$property->setValue($this, $values[$property->name]);
 			}
 		}
 
 		return $this;
 	}
-
 
 	/**
 	 * @return array
@@ -70,13 +56,15 @@ abstract class DataSet extends Object implements IDataSet
 		$valid = array();
 		foreach ($vars as $var) {
 			$var->setAccessible(true);
-			$value = $var->getValue($this);
+			$this->attachValidators($var);
 
+			$value = $var->getValue($this);
 			if($var->getAnnotation('required') && $value === null) {
 				throw new InvalidStateException('Missing desired key "' . $var->name . '"');
 			}
 
 			if($value !== null) {
+				$this->assertType($var);
 				$valid[$var->name] = $value;
 			}
 		}
@@ -97,12 +85,37 @@ abstract class DataSet extends Object implements IDataSet
 				continue;
 			}
 
+			$this->attachValidators($var);
+
 			$value = $var->getValue($this);
 			if($value !== null) {
+				$this->assertType($var);
 				$valid[$var->name] = $value;
 			}
 		}
 
 		return $valid;
+	}
+
+	/**
+	 * @param Property $property
+	 */
+	private function attachValidators(Property &$property)
+	{
+		$value = $property->getValue($this);
+		if($class = $property->getAnnotation('validator')) {
+			$value = $this->context->getValidator($class)->validate($value);
+			$property->setValue($this, $value);
+		}
+	}
+
+	/**
+	 * @param Property $property
+	 */
+	private function assertType(Property &$property)
+	{
+		if($type = $property->getAnnotation('var')) {
+			Validators::assert($property->getValue($this), $type);
+		}
 	}
 }
