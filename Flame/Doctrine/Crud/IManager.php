@@ -5,8 +5,9 @@
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 20.07.13
  */
-namespace Flame\Doctrine;
+namespace Flame\Doctrine\Crud;
 
+use Flame\Doctrine\IEntityDaoProvider;
 use Flame\Doctrine\Values\IDataSet;
 
 interface IManager

@@ -5,13 +5,12 @@
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 11.09.13
  */
-namespace Flame\Doctrine\Managers;
+namespace Flame\Doctrine\Crud;
 
 use Flame\Doctrine\Crud\Create\IEntityCreatorFactory;
 use Flame\Doctrine\Crud\Update\IEntityUpdaterFactory;
 use Flame\Doctrine\Entity;
 use Flame\Doctrine\IEntityDaoProvider;
-use Flame\Doctrine\IManager;
 use Flame\Doctrine\Values\IDataSet;
 use Flame\Doctrine\Crud\Delete\IEntityDeleterFactory;
 use Nette\InvalidStateException;
