@@ -10,10 +10,14 @@ namespace Flame\Doctrine\DI;
 class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 {
 
+	/** @var array  */
 	public $defaults = array(
 		'defaultRepositoryClassName' => 'Flame\Doctrine\EntityDao'
 	);
 
+	/**
+	 * @return void
+	 */
 	public function loadConfiguration()
 	{
 		$this->managerDefaults = array_merge($this->managerDefaults, $this->defaults);
@@ -33,6 +37,9 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 
 		$builder->addDefinition($this->prefix('deleterFactory'))
 			->setClass('Flame\Doctrine\Crud\Delete\EntityDeleterFactory');
+
+		$builder->addDefinition($this->prefix('updaterFactory'))
+			->setClass('Flame\Doctrine\Crud\Update\EntityUpdaterFactory');
 
 		parent::loadConfiguration();
 	}

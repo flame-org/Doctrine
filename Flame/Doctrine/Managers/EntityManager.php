@@ -8,6 +8,7 @@
 namespace Flame\Doctrine\Managers;
 
 use Flame\Doctrine\Crud\Create\IEntityCreatorFactory;
+use Flame\Doctrine\Crud\Update\IEntityUpdaterFactory;
 use Flame\Doctrine\Entity;
 use Flame\Doctrine\IEntityDaoProvider;
 use Flame\Doctrine\IManager;
@@ -31,13 +32,18 @@ class EntityManager extends Object implements IManager
 	/** @var \Flame\Doctrine\Crud\Delete\IEntityDeleterFactory  */
 	private $deleterFactory;
 
+	/** @var \Flame\Doctrine\Crud\Update\IEntityUpdaterFactory  */
 	private $updaterFactory;
 
-	function __construct(IEntityCreatorFactory $creatorFactory, IEntityDeleterFactory $deleterFactory/**, $updaterFactory*/)
+	function __construct(
+		IEntityCreatorFactory $creatorFactory,
+		IEntityDeleterFactory $deleterFactory,
+		IEntityUpdaterFactory $updaterFactory
+	)
 	{
 		$this->creatorFactory = $creatorFactory;
 		$this->deleterFactory = $deleterFactory;
-//		$this->updaterFactory = $updaterFactory;
+		$this->updaterFactory = $updaterFactory;
 	}
 
 
@@ -54,12 +60,16 @@ class EntityManager extends Object implements IManager
 	}
 
 	/**
-	 * @param IEntityUpdater $updater
-	 * @return \Flame\Doctrine\Entity
+	 * @param IDataSet $values
+	 * @param Entity|int $entity
+	 * @return Entity
 	 */
 	public function update(IDataSet $values, $entity)
 	{
-		// TODO: Implement update() method.
+		return $this->updaterFactory
+			->createEntityUpdater($this->getDao())
+			->setFlush($this->flush)
+			->update($values, $entity);
 	}
 
 	/**
@@ -70,6 +80,7 @@ class EntityManager extends Object implements IManager
 	{
 		return $this->deleterFactory
 			->createEntityDeleter($this->getDao())
+			->setFlush($this->flush)
 			->delete($entity);
 	}
 

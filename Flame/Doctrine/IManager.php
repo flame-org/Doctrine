@@ -20,7 +20,7 @@ interface IManager
 
 	/**
 	 * @param IDataSet $values
-	 * @param $entity
+	 * @param \Flame\Doctrine\Entity|int $entity
 	 * @return \Flame\Doctrine\Entity
 	 */
 	public function update(IDataSet $values, $entity);
