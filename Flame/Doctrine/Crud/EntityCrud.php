@@ -55,5 +55,4 @@ abstract class EntityCrud extends Object
 			}
 		}
 	}
-
 }

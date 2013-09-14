@@ -25,4 +25,16 @@ interface IEntityUpdater
 	 * @return \Flame\Doctrine\Entity
 	 */
 	public function update(IDataSet $values, $entity);
+
+	/**
+	 * @param callable $callback
+	 * @return $this
+	 */
+	public function addBeforeUpdate($callback);
+
+	/**
+	 * @param callable $callback
+	 * @return $this
+	 */
+	public function addAfterUpdate($callback);
 }

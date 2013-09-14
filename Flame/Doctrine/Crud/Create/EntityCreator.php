@@ -15,10 +15,10 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 {
 
 	/** @var array  */
-	public $beforeCreate = array();
+	private $beforeCreate = array();
 
 	/** @var array  */
-	public $afterCreate = array();
+	private $afterCreate = array();
 
 	/**
 	 * @param IDataSet $values
@@ -40,6 +40,27 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 		$this->save($entity);
 		return $entity;
 	}
+
+	/**
+	 * @param callable $callback
+	 * @return $this
+	 */
+	public function addBeforeCreate($callback)
+	{
+		$this->beforeCreate[] = $callback;
+		return $this;
+	}
+
+	/**
+	 * @param callable $callback
+	 * @return $this
+	 */
+	public function addAfterUpdate($callback)
+	{
+		$this->afterCreate[] = $callback;
+		return $this;
+	}
+
 
 	/**
 	 * @param Entity $entity

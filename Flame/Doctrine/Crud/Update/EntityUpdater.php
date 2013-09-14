@@ -15,10 +15,10 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 {
 
 	/** @var array  */
-	public $beforeUpdate = array();
+	private $beforeUpdate = array();
 
 	/** @var array  */
-	public $afterUpdate = array();
+	private $afterUpdate = array();
 
 	/**
 	 * @param IDataSet $values
@@ -42,6 +42,26 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 
 		$this->save($entity);
 		return $entity;
+	}
+
+	/**
+	 * @param callable $callback
+	 * @return $this
+	 */
+	public function addBeforeUpdate($callback)
+	{
+		$this->beforeUpdate[] = $callback;
+		return $this;
+	}
+
+	/**
+	 * @param callable $callback
+	 * @return $this
+	 */
+	public function addAfterUpdate($callback)
+	{
+		$this->afterUpdate[] = $callback;
+		return $this;
 	}
 
 	/**

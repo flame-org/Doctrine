@@ -14,10 +14,10 @@ class EntityDeleter extends EntityCrud implements IEntityDeleter
 {
 
 	/** @var array  */
-	public $beforeDelete = array();
+	private $beforeDelete = array();
 
 	/** @var array  */
-	public $afterDelete = array();
+	private $afterDelete = array();
 
 	/**
 	 * @param int|\Flame\Doctrine\Entity $entity
@@ -39,5 +39,25 @@ class EntityDeleter extends EntityCrud implements IEntityDeleter
 		}catch (\Exception $ex) {
 			return false;
 		}
+	}
+
+	/**
+	 * @param callable $callback
+	 * @return $this
+	 */
+	public function addBeforeDelete($callback)
+	{
+		$this->beforeDelete[] = $callback;
+		return $this;
+	}
+
+	/**
+	 * @param callable $callback
+	 * @return $this
+	 */
+	public function addAfterDelete($callback)
+	{
+		$this->afterDelete[] = $callback;
+		return $this;
 	}
 }
