@@ -59,7 +59,7 @@ abstract class DataSet extends Object implements IDataSet
 			}
 
 			if($value !== null) {
-				$this->assertType($var);
+				$this->assertType($var, $value);
 				$valid[$var->name] = $value;
 			}
 		}
@@ -81,7 +81,7 @@ abstract class DataSet extends Object implements IDataSet
 
 			$value = $this->getValue($var->name);
 			if($value !== null) {
-				$this->assertType($var);
+				$this->assertType($var, $value);
 				$valid[$var->name] = $value;
 			}
 		}
@@ -136,12 +136,12 @@ abstract class DataSet extends Object implements IDataSet
 
 	/**
 	 * @param Property $property
+	 * @param $value
 	 */
-	private function assertType(Property &$property)
+	private function assertType(Property &$property, $value)
 	{
 		if($type = $property->getAnnotation('var')) {
-			$property->setAccessible(true);
-			Validators::assert($property->getValue($this), $type);
+			Validators::assert($value, $type);
 		}
 	}
 }
