@@ -7,27 +7,18 @@
  */
 namespace Flame\Doctrine\Crud\Create;
 
+use Flame\Doctrine\Crud\EntityCrud;
 use Flame\Doctrine\Entity;
-use Flame\Doctrine\EntityDao;
 use Flame\Doctrine\Values\IDataSet;
-use Nette\Object;
 
-class EntityCreator extends Object implements IEntityCreator
+class EntityCreator extends EntityCrud implements IEntityCreator
 {
 
-	/** @var bool  */
-	private $flush = true;
+	/** @var array  */
+	public $beforeCreate = array();
 
-	/** @var  EntityDao */
-	private $dao;
-
-	/**
-	 * @param EntityDao $dao
-	 */
-	function __construct(EntityDao $dao)
-	{
-		$this->dao = $dao;
-	}
+	/** @var array  */
+	public $afterCreate = array();
 
 	/**
 	 * @param IDataSet $values
@@ -37,27 +28,17 @@ class EntityCreator extends Object implements IEntityCreator
 	{
 		$entity = $this->dao->createEntity();
 
-		$this->beforeCreate($entity, $values);
+		$this->processHooks($this->beforeCreate, array($entity, $values));
 
 		$_values = $values->getValues();
 		foreach ($_values as $key => $value) {
 			$entity->$key = $value;
 		}
 
-		$this->afterCreate($entity, $values);
+		$this->processHooks($this->afterCreate, array($entity, $values));
 
 		$this->save($entity);
 		return $entity;
-	}
-
-	/**
-	 * @param bool $flush
-	 * @return $this
-	 */
-	public function setFlush($flush)
-	{
-		$this->flush = (bool) $flush;
-		return $this;
 	}
 
 	/**
@@ -71,16 +52,4 @@ class EntityCreator extends Object implements IEntityCreator
 			$this->dao->save();
 		}
 	}
-
-	/**
-	 * @param Entity $entity
-	 * @param IDataSet $values
-	 */
-	protected function beforeCreate(Entity $entity, IDataSet $values) {}
-
-	/**
-	 * @param Entity $entity
-	 * @param IDataSet $values
-	 */
-	protected function afterCreate(Entity $entity, IDataSet $values) {}
 }

@@ -7,37 +7,18 @@
  */
 namespace Flame\Doctrine\Crud\Update;
 
+use Flame\Doctrine\Crud\EntityCrud;
 use Flame\Doctrine\Entity;
 use Flame\Doctrine\Values\IDataSet;
-use Nette\Object;
-use Flame\Doctrine\EntityDao;
 
-class EntityUpdater extends Object implements IEntityUpdater
+class EntityUpdater extends EntityCrud implements IEntityUpdater
 {
 
-	/** @var bool  */
-	private $flush = true;
+	/** @var array  */
+	public $beforeUpdate = array();
 
-	/** @var  EntityDao */
-	private $dao;
-
-	/**
-	 * @param EntityDao $dao
-	 */
-	function __construct(EntityDao $dao)
-	{
-		$this->dao = $dao;
-	}
-
-	/**
-	 * @param bool $flush
-	 * @return $this
-	 */
-	public function setFlush($flush)
-	{
-		$this->flush = $flush;
-		return $this;
-	}
+	/** @var array  */
+	public $afterUpdate = array();
 
 	/**
 	 * @param IDataSet $values
@@ -50,14 +31,14 @@ class EntityUpdater extends Object implements IEntityUpdater
 			$entity = $this->dao->find((int) $entity);
 		}
 
-		$this->beforeUpdate($entity, $values);
+		$this->processHooks($this->beforeUpdate, array($entity, $values));
 
 		$_values = $values->getEditableValues();
 		foreach ($_values as $key => $value) {
 			$entity->$key = $value;
 		}
 
-		$this->afterUpdate($entity, $values);
+		$this->processHooks($this->afterUpdate, array($entity, $values));
 
 		$this->save($entity);
 		return $entity;
@@ -74,16 +55,4 @@ class EntityUpdater extends Object implements IEntityUpdater
 			$this->dao->save();
 		}
 	}
-
-	/**
-	 * @param Entity $entity
-	 * @param IDataSet $values
-	 */
-	protected function beforeUpdate(Entity $entity, IDataSet $values) {}
-
-	/**
-	 * @param Entity $entity
-	 * @param IDataSet $values
-	 */
-	protected function afterUpdate(Entity $entity, IDataSet $values) {}
 }

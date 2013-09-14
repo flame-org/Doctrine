@@ -7,27 +7,17 @@
  */
 namespace Flame\Doctrine\Crud\Delete;
 
-use Nette\Object;
-use Flame\Doctrine\EntityDao;
+use Flame\Doctrine\Crud\EntityCrud;
 use Flame\Doctrine\Entity;
 
-class EntityDeleter extends Object implements IEntityDeleter
+class EntityDeleter extends EntityCrud implements IEntityDeleter
 {
 
-	/** @var bool  */
-	private $flush = true;
+	/** @var array  */
+	public $beforeDelete = array();
 
-	/** @var  EntityDao */
-	private $dao;
-
-	/**
-	 * @param EntityDao $dao
-	 */
-	function __construct(EntityDao $dao)
-	{
-		$this->dao = $dao;
-	}
-
+	/** @var array  */
+	public $afterDelete = array();
 
 	/**
 	 * @param int|\Flame\Doctrine\Entity $entity
@@ -41,33 +31,13 @@ class EntityDeleter extends Object implements IEntityDeleter
 
 		try {
 
-			$this->beforeDelete($entity);
+			$this->processHooks($this->beforeDelete, array($entity));
 			$this->dao->delete($entity, $this->flush);
-			$this->afterDelete();
+			$this->processHooks($this->afterDelete);
 			return true;
 
 		}catch (\Exception $ex) {
 			return false;
 		}
 	}
-
-	/**
-	 * @param bool $flush
-	 * @return $this
-	 */
-	public function setFlush($flush)
-	{
-		$this->flush = (bool) $flush;
-		return $this;
-	}
-
-	/**
-	 * @param Entity $entity
-	 */
-	protected function beforeDelete(Entity $entity) {}
-
-	/**
-	 * @return void
-	 */
-	protected function afterDelete() {}
 }
