@@ -59,6 +59,7 @@ abstract class DataSet extends Object implements IDataSet
 			}
 
 			if($value !== null) {
+				$this->assertType($var);
 				$valid[$var->name] = $value;
 			}
 		}
@@ -80,6 +81,7 @@ abstract class DataSet extends Object implements IDataSet
 
 			$value = $this->getValue($var->name);
 			if($value !== null) {
+				$this->assertType($var);
 				$valid[$var->name] = $value;
 			}
 		}
@@ -89,20 +91,20 @@ abstract class DataSet extends Object implements IDataSet
 
 	/**
 	 * @param $name
-	 * @param bool $load
+	 * @param bool $validators
 	 * @return mixed
 	 */
-	public function getValue($name, $load = true)
+	public function getValue($name, $validators = true)
 	{
 		$property = $this->getReflection()->getProperty($name);
 		$property->setAccessible(true);
 
-		if($load === true) {
-			$this->attachValidators($property);
-			$this->assertType($property);
+		$value = $property->getValue($this);
+		if($value !== null && $validators === true) {
+			$value = $this->validate($property);
 		}
 
-		return $property->getValue($this);
+		return $value;
 	}
 
 	/**
@@ -120,14 +122,16 @@ abstract class DataSet extends Object implements IDataSet
 
 	/**
 	 * @param Property $property
+	 * @return mixed
 	 */
-	private function attachValidators(Property &$property)
+	private function validate(Property &$property)
 	{
 		$value = $property->getValue($this);
 		if($class = $property->getAnnotation('validator')) {
 			$value = $this->context->getValidator($class)->validate($value);
-			$property->setValue($this, $value);
 		}
+
+		return $value;
 	}
 
 	/**
@@ -136,6 +140,7 @@ abstract class DataSet extends Object implements IDataSet
 	private function assertType(Property &$property)
 	{
 		if($type = $property->getAnnotation('var')) {
+			$property->setAccessible(true);
 			Validators::assert($property->getValue($this), $type);
 		}
 	}

@@ -25,10 +25,10 @@ interface IDataSet
 
 	/**
 	 * @param $name
-	 * @param bool $load
+	 * @param bool $validators
 	 * @return mixed
 	 */
-	public function getValue($name, $load = true);
+	public function getValue($name, $validators = true);
 
 	/**
 	 * @return array
