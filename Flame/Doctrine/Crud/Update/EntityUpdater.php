@@ -41,8 +41,8 @@ class EntityUpdater extends Object implements IEntityUpdater
 
 	/**
 	 * @param IDataSet $values
-	 * @param int|\Flame\Doctrine\Entity $entity
-	 * @return \Flame\Doctrine\Entity
+	 * @param Entity|int $entity
+	 * @return Entity
 	 */
 	public function update(IDataSet $values, $entity)
 	{
@@ -50,14 +50,14 @@ class EntityUpdater extends Object implements IEntityUpdater
 			$entity = $this->dao->find((int) $entity);
 		}
 
-		$this->beforeUpdate($entity);
+		$this->beforeUpdate($entity, $values);
 
-		$values = $values->getEditableValues();
-		foreach ($values as $key => $value) {
+		$_values = $values->getEditableValues();
+		foreach ($_values as $key => $value) {
 			$entity->$key = $value;
 		}
 
-		$this->afterUpdate($entity);
+		$this->afterUpdate($entity, $values);
 
 		$this->save($entity);
 		return $entity;
@@ -77,11 +77,13 @@ class EntityUpdater extends Object implements IEntityUpdater
 
 	/**
 	 * @param Entity $entity
+	 * @param IDataSet $values
 	 */
-	protected function beforeUpdate(Entity $entity) {}
+	protected function beforeUpdate(Entity $entity, IDataSet $values) {}
 
 	/**
 	 * @param Entity $entity
+	 * @param IDataSet $values
 	 */
-	protected function afterUpdate(Entity $entity) {}
+	protected function afterUpdate(Entity $entity, IDataSet $values) {}
 }

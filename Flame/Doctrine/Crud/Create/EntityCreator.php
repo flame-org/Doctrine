@@ -37,14 +37,14 @@ class EntityCreator extends Object implements IEntityCreator
 	{
 		$entity = $this->dao->createEntity();
 
-		$this->beforeCreate($entity);
+		$this->beforeCreate($entity, $values);
 
-		$values = $values->getValues();
-		foreach ($values as $key => $value) {
+		$_values = $values->getValues();
+		foreach ($_values as $key => $value) {
 			$entity->$key = $value;
 		}
 
-		$this->afterCreate($entity);
+		$this->afterCreate($entity, $values);
 
 		$this->save($entity);
 		return $entity;
@@ -74,11 +74,13 @@ class EntityCreator extends Object implements IEntityCreator
 
 	/**
 	 * @param Entity $entity
+	 * @param IDataSet $values
 	 */
-	protected function beforeCreate(Entity $entity){}
+	protected function beforeCreate(Entity $entity, IDataSet $values) {}
 
 	/**
 	 * @param Entity $entity
+	 * @param IDataSet $values
 	 */
-	protected function afterCreate(Entity $entity){}
+	protected function afterCreate(Entity $entity, IDataSet $values) {}
 }
