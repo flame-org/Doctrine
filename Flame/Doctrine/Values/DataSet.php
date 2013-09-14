@@ -36,10 +36,8 @@ abstract class DataSet extends Object implements IDataSet
 		$properties = $this->getReflection()->getProperties();
 
 		foreach ($properties as $property) {
-			$property->setAccessible(true);
-
 			if(isset($values[$property->name])) {
-				$property->setValue($this, $values[$property->name]);
+				$this->setValue($property->name, $values[$property->name]);
 			}
 		}
 
@@ -55,16 +53,12 @@ abstract class DataSet extends Object implements IDataSet
 		$vars = $this->getReflection()->getProperties();
 		$valid = array();
 		foreach ($vars as $var) {
-			$var->setAccessible(true);
-			$this->attachValidators($var);
-
-			$value = $var->getValue($this);
+			$value = $this->getValue($var->name);
 			if($var->getAnnotation('required') && $value === null) {
 				throw new InvalidStateException('Missing desired key "' . $var->name . '"');
 			}
 
 			if($value !== null) {
-				$this->assertType($var);
 				$valid[$var->name] = $value;
 			}
 		}
@@ -80,21 +74,48 @@ abstract class DataSet extends Object implements IDataSet
 		$vars = $this->getReflection()->getProperties();
 		$valid = array();
 		foreach ($vars as $var) {
-			$var->setAccessible(true);
 			if(!$var->getAnnotation('editable')) {
 				continue;
 			}
 
-			$this->attachValidators($var);
-
-			$value = $var->getValue($this);
+			$value = $this->getValue($var->name);
 			if($value !== null) {
-				$this->assertType($var);
 				$valid[$var->name] = $value;
 			}
 		}
 
 		return $valid;
+	}
+
+	/**
+	 * @param $name
+	 * @param bool $load
+	 * @return mixed
+	 */
+	public function getValue($name, $load = true)
+	{
+		$property = $this->getReflection()->getProperty($name);
+		$property->setAccessible(true);
+
+		if($load === true) {
+			$this->attachValidators($property);
+			$this->assertType($property);
+		}
+
+		return $property->getValue($this);
+	}
+
+	/**
+	 * @param string $name
+	 * @param $value
+	 * @return $this
+	 */
+	public function setValue($name, $value)
+	{
+		$property = $this->getReflection()->getProperty($name);
+		$property->setAccessible(true);
+		$property->setValue($this, $value);
+		return $this;
 	}
 
 	/**

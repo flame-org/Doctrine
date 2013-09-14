@@ -11,10 +11,24 @@ interface IDataSet
 {
 
 	/**
+	 * @param string $name
+	 * @param $value
+	 * @return $this
+	 */
+	public function setValue($name, $value);
+
+	/**
 	 * @param $values
 	 * @return $this
 	 */
 	public function setValues($values);
+
+	/**
+	 * @param $name
+	 * @param bool $load
+	 * @return mixed
+	 */
+	public function getValue($name, $load = true);
 
 	/**
 	 * @return array
