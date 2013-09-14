@@ -36,8 +36,8 @@ class EntityManager extends Object implements IManager
 
 	function __construct(
 		IEntityCreatorFactory $creatorFactory,
-		IEntityDeleterFactory $deleterFactory,
-		IEntityUpdaterFactory $updaterFactory
+		IEntityUpdaterFactory $updaterFactory,
+		IEntityDeleterFactory $deleterFactory
 	)
 	{
 		$this->creatorFactory = $creatorFactory;
