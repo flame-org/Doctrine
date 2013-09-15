@@ -24,7 +24,7 @@ interface IEntityUpdater
 	 * @param int|\Flame\Doctrine\Entity $entity
 	 * @return \Flame\Doctrine\Entity
 	 */
-	public function update(IDataSet $values, $entity);
+	public function update($entity, IDataSet $values);
 
 	/**
 	 * @param callable $callback

@@ -25,7 +25,7 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 	 * @param Entity|int $entity
 	 * @return Entity
 	 */
-	public function update(IDataSet $values, $entity)
+	public function update($entity, IDataSet $values)
 	{
 		if(!$entity instanceof Entity) {
 			$entity = $this->dao->find((int) $entity);
