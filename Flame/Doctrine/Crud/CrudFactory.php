@@ -16,7 +16,7 @@ abstract class CrudFactory
 {
 
 	/** @var \Flame\Doctrine\EntityDao  */
-	private $dao;
+	protected $dao;
 
 	/**
 	 * @param EntityDao $dao
