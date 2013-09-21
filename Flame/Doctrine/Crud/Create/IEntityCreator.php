@@ -34,5 +34,5 @@ interface IEntityCreator
 	 * @param callable $callback
 	 * @return $this
 	 */
-	public function addAfterUpdate($callback);
+	public function addAfterCreate($callback);
 }
