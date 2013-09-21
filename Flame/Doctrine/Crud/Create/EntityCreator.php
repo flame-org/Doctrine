@@ -35,9 +35,14 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 			$entity->$key = $value;
 		}
 
+		$this->dao->add($entity);
+
 		$this->processHooks($this->afterCreate, array($entity, $values));
 
-		$this->save($entity);
+		if($this->flush === true) {
+			$this->dao->save();
+		}
+
 		return $entity;
 	}
 
@@ -55,22 +60,9 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 	 * @param callable $callback
 	 * @return $this
 	 */
-	public function addAfterUpdate($callback)
+	public function addAfterCreate($callback)
 	{
 		$this->afterCreate[] = $callback;
 		return $this;
-	}
-
-
-	/**
-	 * @param Entity $entity
-	 */
-	protected function save(Entity $entity)
-	{
-		$this->dao->add($entity);
-
-		if($this->flush === true) {
-			$this->dao->save();
-		}
 	}
 }

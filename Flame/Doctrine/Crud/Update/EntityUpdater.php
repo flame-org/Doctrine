@@ -38,9 +38,14 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 			$entity->$key = $value;
 		}
 
+		$this->dao->add($entity);
+
 		$this->processHooks($this->afterUpdate, array($entity, $values));
 
-		$this->save($entity);
+		if($this->flush === true) {
+			$this->dao->save();
+		}
+
 		return $entity;
 	}
 
@@ -62,17 +67,5 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 	{
 		$this->afterUpdate[] = $callback;
 		return $this;
-	}
-
-	/**
-	 * @param Entity $entity
-	 */
-	protected function save(Entity $entity)
-	{
-		$this->dao->add($entity);
-
-		if($this->flush === true) {
-			$this->dao->save();
-		}
 	}
 }
