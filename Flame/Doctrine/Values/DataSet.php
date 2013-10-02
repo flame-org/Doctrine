@@ -8,16 +8,21 @@
 namespace Flame\Doctrine\Values;
 
 use Flame\Doctrine\DI\Context;
+use Flame\Doctrine\EntityMapper;
+use Kdyby\Doctrine\Entities\BaseEntity;
 use Nette\InvalidStateException;
 use Nette\Object;
 use Nette\Reflection\Property;
 use Nette\Utils\Validators;
 
-abstract class DataSet extends Object implements IDataSet
+abstract class DataSet extends BaseEntity implements IDataSet
 {
 
 	/** @var  Context */
 	private $context;
+
+	/** @var \Flame\Doctrine\EntityMapper  */
+	private $entityMapper;
 
 	/**
 	 * @param Context $context
@@ -25,6 +30,7 @@ abstract class DataSet extends Object implements IDataSet
 	function __construct(Context $context)
 	{
 		$this->context = $context;
+		$this->entityMapper = new EntityMapper;
 	}
 
 	/**
@@ -33,13 +39,7 @@ abstract class DataSet extends Object implements IDataSet
 	 */
 	public function setValues($values)
 	{
-		$properties = $this->getReflection()->getProperties();
-
-		foreach ($properties as $property) {
-			if(isset($values[$property->name])) {
-				$this->setValue($property->name, $values[$property->name]);
-			}
-		}
+		$this->entityMapper->load($values, $this);
 
 		return $this;
 	}
@@ -50,7 +50,7 @@ abstract class DataSet extends Object implements IDataSet
 	 */
 	public function getValues()
 	{
-		$vars = $this->getReflection()->getProperties();
+		$vars = $this->entityMapper->extract($this);
 		$valid = array();
 		foreach ($vars as $var) {
 			$value = $this->getValue($var->name);
