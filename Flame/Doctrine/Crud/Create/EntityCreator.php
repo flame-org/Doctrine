@@ -11,7 +11,6 @@ use Flame\Doctrine\Crud\EntityCrud;
 use Flame\Doctrine\EntityDao;
 use Flame\Doctrine\Rest\EntityMapper;
 use Flame\Doctrine\Entity;
-use Flame\Doctrine\Values\IDataSet;
 
 class EntityCreator extends EntityCrud implements IEntityCreator
 {
@@ -37,7 +36,7 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 	}
 
 	/**
-	 * @param IDataSet $values
+	 * @param $values
 	 * @return Entity
 	 */
 	public function create($values)

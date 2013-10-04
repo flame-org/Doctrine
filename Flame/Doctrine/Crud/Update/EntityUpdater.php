@@ -11,7 +11,6 @@ use Flame\Doctrine\Crud\EntityCrud;
 use Flame\Doctrine\EntityDao;
 use Flame\Doctrine\Rest\EntityMapper;
 use Flame\Doctrine\Entity;
-use Flame\Doctrine\Values\IDataSet;
 
 class EntityUpdater extends EntityCrud implements IEntityUpdater
 {
@@ -37,9 +36,9 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 	}
 
 	/**
-	 * @param IDataSet $values
 	 * @param Entity|int $entity
-	 * @return Entity
+	 * @param $values
+	 * @return Entity|object
 	 */
 	public function update($entity, $values)
 	{
