@@ -14,10 +14,10 @@ class EntityDeleter extends EntityCrud implements IEntityDeleter
 {
 
 	/** @var array  */
-	private $beforeDelete = array();
+	public $beforeDelete = array();
 
 	/** @var array  */
-	private $afterDelete = array();
+	public $afterDelete = array();
 
 	/**
 	 * @param int|\Flame\Doctrine\Entity $entity

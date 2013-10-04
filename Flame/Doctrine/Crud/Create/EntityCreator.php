@@ -15,10 +15,10 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 {
 
 	/** @var array  */
-	private $beforeCreate = array();
+	public $beforeCreate = array();
 
 	/** @var array  */
-	private $afterCreate = array();
+	public $afterCreate = array();
 
 	/**
 	 * @param IDataSet $values

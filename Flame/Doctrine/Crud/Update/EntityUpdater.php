@@ -15,10 +15,10 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 {
 
 	/** @var array  */
-	private $beforeUpdate = array();
+	public $beforeUpdate = array();
 
 	/** @var array  */
-	private $afterUpdate = array();
+	public $afterUpdate = array();
 
 	/**
 	 * @param IDataSet $values
