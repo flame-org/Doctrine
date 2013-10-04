@@ -13,28 +13,7 @@ use Nette\InvalidStateException;
 
 abstract class Entity extends IdentifiedEntity
 {
-
-	/**
-	 * @param array $keys
-	 * @return array
-	 */
-	public function getValues(array $keys)
-	{
-		$result = array();
-		if(count($keys)) {
-			foreach ($keys as $key) {
-				$r = $this->$key;
-				if($r instanceof \Traversable) {
-					$r = iterator_to_array($r);
-				}
-
-				$result[$key] = $r;
-			}
-		}
-
-		return $result;
-	}
-
+	
 	/**
 	 * @return array
 	 */
