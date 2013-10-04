@@ -40,24 +40,4 @@ class EntityDeleter extends EntityCrud implements IEntityDeleter
 			return false;
 		}
 	}
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addBeforeDelete($callback)
-	{
-		$this->beforeDelete[] = $callback;
-		return $this;
-	}
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addAfterDelete($callback)
-	{
-		$this->afterDelete[] = $callback;
-		return $this;
-	}
 }

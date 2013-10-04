@@ -59,24 +59,4 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 
 		return $entity;
 	}
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addBeforeUpdate($callback)
-	{
-		$this->beforeUpdate[] = $callback;
-		return $this;
-	}
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addAfterUpdate($callback)
-	{
-		$this->afterUpdate[] = $callback;
-		return $this;
-	}
 }

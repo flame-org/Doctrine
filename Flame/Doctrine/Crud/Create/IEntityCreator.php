@@ -21,16 +21,4 @@ interface IEntityCreator
 	 * @return \Flame\Doctrine\Entity
 	 */
 	public function create($values);
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addBeforeCreate($callback);
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addAfterCreate($callback);
 }

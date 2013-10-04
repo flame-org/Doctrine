@@ -21,16 +21,4 @@ interface IEntityDeleter
 	 * @return bool
 	 */
 	public function delete($entity);
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addBeforeDelete($callback);
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addAfterDelete($callback);
 }

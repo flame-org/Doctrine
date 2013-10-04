@@ -56,24 +56,4 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 
 		return $entity;
 	}
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addBeforeCreate($callback)
-	{
-		$this->beforeCreate[] = $callback;
-		return $this;
-	}
-
-	/**
-	 * @param callable $callback
-	 * @return $this
-	 */
-	public function addAfterCreate($callback)
-	{
-		$this->afterCreate[] = $callback;
-		return $this;
-	}
 }
