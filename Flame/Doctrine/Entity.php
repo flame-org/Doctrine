@@ -13,38 +13,13 @@ use Nette\InvalidStateException;
 
 abstract class Entity extends IdentifiedEntity
 {
-	
+
 	/**
 	 * @return array
 	 */
 	public function toArray()
 	{
 		return array_merge(array('id' => $this->getId()), get_object_vars($this));
-	}
-
-	/**
-	 *
-	 */
-	public function toFullArray()
-	{
-		$vars = $this->toArray();
-		if(count($vars)) {
-			foreach($vars as &$var) {
-				if($var instanceof Entity) {
-					$var = $var->toFullArray();
-				}elseif($var instanceof \Traversable) {
-					$var = array_map(function ($item) {
-						if($item instanceof Entity) {
-							$item = $item->toArray();
-						}
-
-						return $item;
-					}, iterator_to_array($var));
-				}
-			}
-		}
-
-		return $vars;
 	}
 
 	/**
