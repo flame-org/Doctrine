@@ -48,7 +48,7 @@ abstract class EntityCrud extends Object
 		if(count($hooks)) {
 			foreach ($hooks as $hook) {
 				if(!is_callable($hook)) {
-					throw new InvalidStateException('Invalid callback "' . $hook . '" given.');
+					throw new InvalidStateException('Invalid callback given.');
 				}
 
 				call_user_func_array($hook, $args);
