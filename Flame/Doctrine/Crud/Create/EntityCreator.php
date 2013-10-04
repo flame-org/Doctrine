@@ -8,6 +8,8 @@
 namespace Flame\Doctrine\Crud\Create;
 
 use Flame\Doctrine\Crud\EntityCrud;
+use Flame\Doctrine\EntityDao;
+use Flame\Doctrine\Rest\EntityMapper;
 use Flame\Doctrine\Entity;
 use Flame\Doctrine\Values\IDataSet;
 
@@ -20,21 +22,31 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 	/** @var array  */
 	public $afterCreate = array();
 
+	/** @var \Flame\Doctrine\Rest\EntityMapper  */
+	private $entityMapper;
+
+	/**
+	 * @param EntityDao $dao
+	 * @param EntityMapper $entityMapper
+	 */
+	function __construct(EntityDao $dao, EntityMapper $entityMapper)
+	{
+		parent::__construct($dao);
+
+		$this->entityMapper = $entityMapper;
+	}
+
 	/**
 	 * @param IDataSet $values
 	 * @return Entity
 	 */
-	public function create(IDataSet $values)
+	public function create($values)
 	{
 		$entity = $this->dao->createEntity();
 
 		$this->processHooks($this->beforeCreate, array($entity, $values));
 
-		$_values = $values->getValues();
-		foreach ($_values as $key => $value) {
-			$entity->$key = $value;
-		}
-
+		$this->entityMapper->setValues($values, $entity);
 		$this->dao->add($entity);
 
 		$this->processHooks($this->afterCreate, array($entity, $values));

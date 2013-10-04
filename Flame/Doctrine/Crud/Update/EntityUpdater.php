@@ -8,6 +8,8 @@
 namespace Flame\Doctrine\Crud\Update;
 
 use Flame\Doctrine\Crud\EntityCrud;
+use Flame\Doctrine\EntityDao;
+use Flame\Doctrine\Rest\EntityMapper;
 use Flame\Doctrine\Entity;
 use Flame\Doctrine\Values\IDataSet;
 
@@ -20,12 +22,26 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 	/** @var array  */
 	public $afterUpdate = array();
 
+	/** @var \Flame\Doctrine\Rest\EntityMapper  */
+	private $entityMapper;
+
+	/**
+	 * @param EntityDao $dao
+	 * @param EntityMapper $entityMapper
+	 */
+	function __construct(EntityDao $dao, EntityMapper $entityMapper)
+	{
+		parent::__construct($dao);
+
+		$this->entityMapper = $entityMapper;
+	}
+
 	/**
 	 * @param IDataSet $values
 	 * @param Entity|int $entity
 	 * @return Entity
 	 */
-	public function update($entity, IDataSet $values)
+	public function update($entity, $values)
 	{
 		if(!$entity instanceof Entity) {
 			$entity = $this->dao->find((int) $entity);
@@ -33,11 +49,7 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 
 		$this->processHooks($this->beforeUpdate, array($entity, $values));
 
-		$_values = $values->getEditableValues();
-		foreach ($_values as $key => $value) {
-			$entity->$key = $value;
-		}
-
+		$this->entityMapper->setValues($values, $entity);
 		$this->dao->add($entity);
 
 		$this->processHooks($this->afterUpdate, array($entity, $values));

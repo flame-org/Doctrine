@@ -11,19 +11,25 @@ use Flame\Doctrine\Crud\Create\EntityCreator;
 use Flame\Doctrine\Crud\Delete\EntityDeleter;
 use Flame\Doctrine\Crud\Update\EntityUpdater;
 use Flame\Doctrine\EntityDao;
+use Flame\Doctrine\Rest\EntityMapper;
 
-abstract class CrudFactory
+class CrudFactory
 {
 
 	/** @var \Flame\Doctrine\EntityDao  */
-	protected $dao;
+	private $dao;
+
+	/** @var \Flame\Doctrine\Rest\EntityMapper  */
+	private $entityMapper;
 
 	/**
 	 * @param EntityDao $dao
+	 * @param EntityMapper $entityMapper
 	 */
-	function __construct(EntityDao $dao)
+	function __construct(EntityDao $dao, EntityMapper $entityMapper)
 	{
 		$this->dao = $dao;
+		$this->entityMapper = $entityMapper;
 	}
 
 	/**
@@ -31,7 +37,7 @@ abstract class CrudFactory
 	 */
 	public function createCreator()
 	{
-		return new EntityCreator($this->dao);
+		return new EntityCreator($this->dao, $this->entityMapper);
 	}
 
 	/**
@@ -39,7 +45,7 @@ abstract class CrudFactory
 	 */
 	public function createUpdater()
 	{
-		return new EntityUpdater($this->dao);
+		return new EntityUpdater($this->dao, $this->entityMapper);
 	}
 
 	/**

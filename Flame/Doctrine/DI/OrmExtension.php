@@ -36,6 +36,9 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 		$builder->addDefinition($this->prefix('updaterFactory'))
 			->setClass('Flame\Doctrine\Crud\Update\EntityUpdaterFactory');
 
+		$builder->addDefinition($this->prefix('entityMapper'))
+			->setClass('Flame\Doctrine\Rest\EntityMapper');
+
 		parent::loadConfiguration();
 	}
 

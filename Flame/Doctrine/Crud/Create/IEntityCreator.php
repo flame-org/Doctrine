@@ -7,8 +7,6 @@
  */
 namespace Flame\Doctrine\Crud\Create;
 
-use Flame\Doctrine\Values\IDataSet;
-
 interface IEntityCreator
 {
 
@@ -19,10 +17,10 @@ interface IEntityCreator
 	public function setFlush($flush);
 
 	/**
-	 * @param IDataSet $values
+	 * @param $values
 	 * @return \Flame\Doctrine\Entity
 	 */
-	public function create(IDataSet $values);
+	public function create($values);
 
 	/**
 	 * @param callable $callback

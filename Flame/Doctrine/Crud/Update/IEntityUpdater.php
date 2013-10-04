@@ -8,8 +8,6 @@
 
 namespace Flame\Doctrine\Crud\Update;
 
-use Flame\Doctrine\Values\IDataSet;
-
 interface IEntityUpdater
 {
 
@@ -20,11 +18,11 @@ interface IEntityUpdater
 	public function setFlush($flush);
 
 	/**
-	 * @param IDataSet $values
+	 * @param $values
 	 * @param int|\Flame\Doctrine\Entity $entity
 	 * @return \Flame\Doctrine\Entity
 	 */
-	public function update($entity, IDataSet $values);
+	public function update($entity, $values);
 
 	/**
 	 * @param callable $callback
