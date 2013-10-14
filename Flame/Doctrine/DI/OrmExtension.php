@@ -31,6 +31,9 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 			->setClass('Flame\Doctrine\Rest\EntityMapper');
 
 		parent::loadConfiguration();
+
+		$configuration = $builder->getDefinition('doctrine.default.ormConfiguration');
+		$configuration->addSetup('addCustomStringFunction', array('DATE_FORMAT', 'Flame\Doctrine\StringFunctions\DateFormat'));
 	}
 
 }
