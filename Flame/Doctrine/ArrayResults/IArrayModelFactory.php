@@ -5,7 +5,7 @@
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 16.10.13
  */
-namespace Flame\Doctrine\ArrayResults\Model;
+namespace Flame\Doctrine\ArrayResults;
 
 use Flame\Doctrine\EntityDao;
 

@@ -5,9 +5,7 @@
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 16.10.13
  */
-namespace Flame\Doctrine\ArrayResults\Model;
-
-use Flame\Doctrine\ArrayResults\IQueryObject;
+namespace Flame\Doctrine\ArrayResults;
 
 interface IArrayModel
 {
