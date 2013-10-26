@@ -1,20 +1,20 @@
 <?php
 /**
- * Class RestModel
+ * Class ArrayModel
  *
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 16.10.13
  */
-namespace Flame\Doctrine\Rest\Model;
+namespace Flame\Doctrine\ArrayResults\Model;
 
 use Flame\Doctrine\EntityDao;
-use Flame\Doctrine\Rest\IQueryObject;
+use Flame\Doctrine\ArrayResults\IQueryObject;
 use Doctrine;
 use Kdyby\Doctrine\DqlSelection;
 use Kdyby\Doctrine\UnexpectedValueException;
 use Nette\Object;
 
-class RestModel extends Object implements IRestModel
+class ArrayModel extends Object implements IArrayModel
 {
 
 	/** @var  array|null */

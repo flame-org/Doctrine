@@ -1,15 +1,15 @@
 <?php
 /**
- * Class IRestModel
+ * Class IArrayModel
  *
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
  * @date: 16.10.13
  */
-namespace Flame\Doctrine\Rest\Model;
+namespace Flame\Doctrine\ArrayResults\Model;
 
-use Flame\Doctrine\Rest\IQueryObject;
+use Flame\Doctrine\ArrayResults\IQueryObject;
 
-interface IRestModel
+interface IArrayModel
 {
 
 	/**
