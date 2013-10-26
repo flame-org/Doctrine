@@ -24,17 +24,6 @@ class EntityDao extends \Kdyby\Doctrine\EntityDao
 	}
 
 	/**
-	 * @return \Flame\Doctrine\Entity
-	 */
-	public function addNewEntity()
-	{
-		$reflection = new ClassType($this->getEntityName());
-		$entity = $reflection->newInstanceArgs(func_get_args());
-		$this->add($entity);
-		return $entity;
-	}
-
-	/**
 	 * @param mixed $id
 	 * @param int $lockMode
 	 * @param null $lockVersion
