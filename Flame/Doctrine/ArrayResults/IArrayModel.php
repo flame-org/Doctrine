@@ -18,14 +18,14 @@ interface IArrayModel
 	public function applyPaging($offset, $limit);
 
 	/**
-	 * @param IQueryObject $queryObject
+	 * @param IQueryObject|\Doctrine\ORM\QueryBuilder|\Doctrine\ORM\Query $queryObject
 	 * @return array
 	 */
-	public function fetch(IQueryObject $queryObject);
+	public function fetch($queryObject);
 
 	/**
-	 * @param IQueryObject $queryObject
+	 * @param IQueryObject|\Doctrine\ORM\QueryBuilder|\Doctrine\ORM\Query $queryObject
 	 * @return array
 	 */
-	public function fetchOne(IQueryObject $queryObject);
+	public function fetchOne($queryObject);
 }

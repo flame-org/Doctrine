@@ -31,19 +31,19 @@ class ArrayModel extends Object implements IArrayModel
 	}
 
 	/**
-	 * @param IQueryObject $queryObject
+	 * @param Doctrine\ORM\Query|Doctrine\ORM\QueryBuilder|IQueryObject $queryObject
 	 * @return array
 	 */
-	public function fetch(IQueryObject $queryObject)
+	public function fetch($queryObject)
 	{
 		return $this->getQuery($queryObject)->getArrayResult();
 	}
 
 	/**
-	 * @param IQueryObject $queryObject
-	 * @return array
+	 * @param Doctrine\ORM\Query|Doctrine\ORM\QueryBuilder|IQueryObject $queryObject
+	 * @return array|mixed
 	 */
-	public function fetchOne(IQueryObject $queryObject)
+	public function fetchOne($queryObject)
 	{
 		return $this->getQuery($queryObject)->getSingleResult(Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 	}
@@ -60,13 +60,16 @@ class ArrayModel extends Object implements IArrayModel
 	}
 
 	/**
-	 * @param IQueryObject $queryObject
+	 * @param $query
 	 * @return array|Doctrine\ORM\Query
 	 * @throws \Kdyby\Doctrine\UnexpectedValueException
 	 */
-	private function getQuery(IQueryObject $queryObject)
+	private function getQuery($query)
 	{
-		$query = $queryObject->getQuery($this->dao);
+		if($query instanceof IQueryObject) {
+			$query = $query->getQuery($this->dao);
+		}
+
 		if ($query instanceof Doctrine\ORM\QueryBuilder) {
 			$query = $query->getQuery();
 
