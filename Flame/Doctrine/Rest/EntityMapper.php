@@ -49,7 +49,7 @@ class EntityMapper extends Object
 	{
 		$properties = $entity->getReflection()->getProperties();
 		foreach ($properties as $property) {
-			if(!isset($values[$property->name]) || (!$property->hasAnnotation('writable') && !$property->hasAnnotation('required'))) {
+			if(!isset($values[$property->name]) || !$property->hasAnnotation('writable')) {
 				continue;
 			}
 
