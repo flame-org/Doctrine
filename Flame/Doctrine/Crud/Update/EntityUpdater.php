@@ -48,7 +48,7 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 
 		$this->processHooks($this->beforeUpdate, array($entity, $values));
 
-		$this->entityMapper->setValues($values, $entity);
+		$this->entityMapper->updateValues($values, $entity);
 		$this->dao->add($entity);
 
 		$this->processHooks($this->afterUpdate, array($entity, $values));

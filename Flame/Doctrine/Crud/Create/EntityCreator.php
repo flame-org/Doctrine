@@ -43,9 +43,8 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 	{
 		$entity = $this->dao->createEntity();
 
-		$this->entityMapper->checkRequiredValues($values, $entity);
 		$this->processHooks($this->beforeCreate, array($entity, $values));
-		$this->entityMapper->setValues($values, $entity);
+		$this->entityMapper->initValues($values, $entity);
 		$this->dao->add($entity);
 		$this->processHooks($this->afterCreate, array($entity, $values));
 
