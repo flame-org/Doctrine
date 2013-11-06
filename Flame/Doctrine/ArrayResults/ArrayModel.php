@@ -45,7 +45,8 @@ class ArrayModel extends Object implements IArrayModel
 	 */
 	public function fetchOne($queryObject)
 	{
-		return $this->getQuery($queryObject)->getSingleResult(Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+		$result = $this->getQuery($queryObject)->getArrayResult();
+		return array_shift($result);
 	}
 
 	/**
