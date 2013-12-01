@@ -45,14 +45,16 @@ abstract class EntityCrud extends Object
 	 */
 	protected function processHooks($hooks, array $args = array())
 	{
-		if(count($hooks)) {
-			foreach ($hooks as $hook) {
-				if(!is_callable($hook)) {
-					throw new InvalidStateException('Invalid callback given.');
-				}
+		if(!is_array($hooks)) {
+			throw new InvalidStateException('Hooks configuration must be in array');
+		}
 
-				call_user_func_array($hook, $args);
+		foreach ($hooks as $hook) {
+			if(!is_callable($hook)) {
+				throw new InvalidStateException('Invalid callback given.');
 			}
+
+			call_user_func_array($hook, $args);
 		}
 	}
 }
