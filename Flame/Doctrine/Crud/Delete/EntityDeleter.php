@@ -9,6 +9,7 @@ namespace Flame\Doctrine\Crud\Delete;
 
 use Flame\Doctrine\Crud\EntityCrud;
 use Flame\Doctrine\Entity;
+use Nette\FatalErrorException;
 
 class EntityDeleter extends EntityCrud implements IEntityDeleter
 {
@@ -22,6 +23,7 @@ class EntityDeleter extends EntityCrud implements IEntityDeleter
 	/**
 	 * @param int|\Flame\Doctrine\Entity $entity
 	 * @return bool
+	 * @throws \ErrorException
 	 */
 	public function delete($entity)
 	{
@@ -37,7 +39,7 @@ class EntityDeleter extends EntityCrud implements IEntityDeleter
 			return true;
 
 		}catch (\Exception $ex) {
-			return false;
+			throw new \ErrorException($ex->getMessage());
 		}
 	}
 }
