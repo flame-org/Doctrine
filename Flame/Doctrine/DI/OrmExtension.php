@@ -28,7 +28,10 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 			->setClass('\Flame\Doctrine\DI\Context');
 
 		$builder->addDefinition($this->prefix('entityMapper'))
-			->setClass('Flame\Doctrine\Rest\EntityMapper');
+			->setClass('Flame\Doctrine\Mapping\EntityMapper');
+
+		$builder->addDefinition($this->prefix('restEntityMapper'))
+			->setClass('Flame\Doctrine\Mapping\RestEntityMapper');
 
 		$builder->addDefinition($this->prefix('arrayModelFactory'))
 			->setClass('Flame\Doctrine\ArrayResults\ArrayModelFactory');

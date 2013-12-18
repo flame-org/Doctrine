@@ -1,0 +1,40 @@
+<?php
+/**
+ * Class IRestEntityMapper
+ *
+ * @author Jiří Šifalda <sifalda.jiri@gmail.com>
+ * @date 18.12.13
+ */
+namespace Flame\Doctrine\Mapping;
+
+use Kdyby\Doctrine\Entities\BaseEntity;
+
+interface IRestEntityMapper
+{
+	/**
+	 * @param $values
+	 * @param BaseEntity $entity
+	 * @return BaseEntity
+	 */
+	public function setValues($values, BaseEntity $entity);
+
+	/**
+	 * @param BaseEntity $entity
+	 * @return array
+	 */
+	public function getValues(BaseEntity &$entity);
+
+	/**
+	 * @param $values
+	 * @param BaseEntity $entity
+	 * @return BaseEntity
+	 */
+	public function initValues($values, BaseEntity $entity);
+
+	/**
+	 * @param $values
+	 * @param BaseEntity $entity
+	 * @return BaseEntity
+	 */
+	public function updateValues($values, BaseEntity $entity);
+} 

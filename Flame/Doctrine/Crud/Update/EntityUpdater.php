@@ -9,7 +9,7 @@ namespace Flame\Doctrine\Crud\Update;
 
 use Flame\Doctrine\Crud\EntityCrud;
 use Flame\Doctrine\EntityDao;
-use Flame\Doctrine\Rest\EntityMapper;
+use Flame\Doctrine\Mapping\IRestEntityMapper;
 use Flame\Doctrine\Entity;
 use Nette\InvalidArgumentException;
 
@@ -22,14 +22,14 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 	/** @var array  */
 	public $afterUpdate = array();
 
-	/** @var \Flame\Doctrine\Rest\EntityMapper  */
+	/** @var \Flame\Doctrine\Mapping\IRestEntityMapper  */
 	private $entityMapper;
 
 	/**
 	 * @param EntityDao $dao
-	 * @param EntityMapper $entityMapper
+	 * @param IRestEntityMapper $entityMapper
 	 */
-	function __construct(EntityDao $dao, EntityMapper $entityMapper)
+	function __construct(EntityDao $dao, IRestEntityMapper $entityMapper)
 	{
 		parent::__construct($dao);
 

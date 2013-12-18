@@ -1,30 +1,54 @@
 <?php
 /**
- * Class EntityMapper
+ * Class RestEntityMapper
  *
- * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
- * @date: 04.10.13
+ * @author Jiří Šifalda <sifalda.jiri@gmail.com>
+ * @date 18.12.13
  */
-namespace Flame\Doctrine\Rest;
+namespace Flame\Doctrine\Mapping;
 
+use Flame\Doctrine\DI\IContext;
 use Kdyby\Doctrine\Entities\BaseEntity;
-use Nette\InvalidStateException;
 use Nette\Object;
-use Flame\Doctrine\DI\Context;
+use Nette\InvalidStateException;
 use Nette\Reflection\Property;
 
-class EntityMapper extends Object
+class RestEntityMapper extends Object implements IRestEntityMapper
 {
 
-	/** @var  Context */
+	/** @var \Flame\Doctrine\DI\IContext  */
 	private $context;
 
+	/** @var \Flame\Doctrine\Mapping\IEntityMapper  */
+	private $entityMapper;
+
 	/**
-	 * @param Context $context
+	 * @param IContext $context
+	 * @param IEntityMapper $entityMapper
 	 */
-	function __construct(Context $context)
+	function __construct(IContext $context, IEntityMapper $entityMapper)
 	{
 		$this->context = $context;
+		$this->entityMapper = $entityMapper;
+	}
+
+	/**
+	 * @param $values
+	 * @param BaseEntity $entity
+	 * @return BaseEntity
+	 */
+	public function setValues($values, BaseEntity $entity)
+	{
+		return $this->entityMapper->setValues($values, $entity);
+	}
+
+	/**
+	 * @param BaseEntity $entity
+	 * @return array
+	 */
+	public function getValues(BaseEntity &$entity)
+	{
+		return $this->entityMapper->getValues($entity);
 	}
 
 	/**
@@ -33,7 +57,7 @@ class EntityMapper extends Object
 	 * @return BaseEntity
 	 * @throws \Nette\InvalidStateException
 	 */
-	public function initValues($values, BaseEntity &$entity)
+	public function initValues($values, BaseEntity $entity)
 	{
 		$parsedValues = array();
 		$properties = $entity->getReflection()->getProperties();
@@ -60,7 +84,7 @@ class EntityMapper extends Object
 	 * @param BaseEntity $entity
 	 * @return BaseEntity
 	 */
-	public function updateValues($values, BaseEntity &$entity)
+	public function updateValues($values, BaseEntity $entity)
 	{
 		$parsedValues = array();
 		$properties = $entity->getReflection()->getProperties();
@@ -78,23 +102,6 @@ class EntityMapper extends Object
 		return $this->setValues($parsedValues, $entity);
 	}
 
-	/**
-	 * @param $values
-	 * @param BaseEntity $entity
-	 * @return BaseEntity
-	 */
-	public function setValues(&$values, BaseEntity &$entity)
-	{
-		if(count($values)) {
-			foreach ($values as $key => $value) {
-				if(isset($entity->$key)) {
-					$entity->$key = $value;
-				}
-			}
-		}
-
-		return $entity;
-	}
 
 	/**
 	 * @param Property $property
@@ -109,5 +116,4 @@ class EntityMapper extends Object
 
 		return $value;
 	}
-
 }

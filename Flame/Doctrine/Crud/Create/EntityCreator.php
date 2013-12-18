@@ -9,7 +9,7 @@ namespace Flame\Doctrine\Crud\Create;
 
 use Flame\Doctrine\Crud\EntityCrud;
 use Flame\Doctrine\EntityDao;
-use Flame\Doctrine\Rest\EntityMapper;
+use Flame\Doctrine\Mapping\IRestEntityMapper;
 use Flame\Doctrine\Entity;
 
 class EntityCreator extends EntityCrud implements IEntityCreator
@@ -21,14 +21,14 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 	/** @var array  */
 	public $afterCreate = array();
 
-	/** @var \Flame\Doctrine\Rest\EntityMapper  */
+	/** @var \Flame\Doctrine\Mapping\IRestEntityMapper  */
 	private $entityMapper;
 
 	/**
 	 * @param EntityDao $dao
-	 * @param EntityMapper $entityMapper
+	 * @param IRestEntityMapper $entityMapper
 	 */
-	function __construct(EntityDao $dao, EntityMapper $entityMapper)
+	function __construct(EntityDao $dao, IRestEntityMapper $entityMapper)
 	{
 		parent::__construct($dao);
 

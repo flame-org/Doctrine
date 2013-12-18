@@ -11,7 +11,7 @@ use Flame\Doctrine\Crud\Create\EntityCreator;
 use Flame\Doctrine\Crud\Delete\EntityDeleter;
 use Flame\Doctrine\Crud\Update\EntityUpdater;
 use Flame\Doctrine\EntityDao;
-use Flame\Doctrine\Rest\EntityMapper;
+use Flame\Doctrine\Mapping\IRestEntityMapper;
 
 class CrudFactory
 {
@@ -19,14 +19,14 @@ class CrudFactory
 	/** @var \Flame\Doctrine\EntityDao  */
 	private $dao;
 
-	/** @var \Flame\Doctrine\Rest\EntityMapper  */
+	/** @var \Flame\Doctrine\Mapping\IRestEntityMapper  */
 	private $entityMapper;
 
 	/**
 	 * @param EntityDao $dao
-	 * @param EntityMapper $entityMapper
+	 * @param IRestEntityMapper $entityMapper
 	 */
-	function __construct(EntityDao $dao, EntityMapper $entityMapper)
+	function __construct(EntityDao $dao, IRestEntityMapper $entityMapper)
 	{
 		$this->dao = $dao;
 		$this->entityMapper = $entityMapper;
