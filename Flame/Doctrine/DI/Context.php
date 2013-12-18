@@ -12,7 +12,7 @@ use Flame\Doctrine\IValidator;
 use Nette\InvalidStateException;
 use Nette\DI\Container;
 
-class Context extends Object
+class Context extends Object implements IContext
 {
 
 	/** @var  Container */
