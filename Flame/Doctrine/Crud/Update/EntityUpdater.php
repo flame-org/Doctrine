@@ -11,6 +11,7 @@ use Flame\Doctrine\Crud\EntityCrud;
 use Flame\Doctrine\EntityDao;
 use Flame\Doctrine\Rest\EntityMapper;
 use Flame\Doctrine\Entity;
+use Nette\InvalidArgumentException;
 
 class EntityUpdater extends EntityCrud implements IEntityUpdater
 {
@@ -39,11 +40,16 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 	 * @param Entity|int $entity
 	 * @param $values
 	 * @return Entity|object
+	 * @throws \Nette\InvalidArgumentException
 	 */
 	public function update($entity, $values)
 	{
 		if(!$entity instanceof Entity) {
 			$entity = $this->dao->find((int) $entity);
+		}
+
+		if(!$entity) {
+			throw new InvalidArgumentException('Entity not found.');
 		}
 
 		$this->processHooks($this->beforeUpdate, array($entity, $values));
