@@ -7,8 +7,7 @@
  */
 namespace Flame\Doctrine\Mapping;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\Collection;
 use Kdyby\Doctrine\Entities\BaseEntity;
 use Kdyby\Doctrine\Entities\IdentifiedEntity;
 use Nette\Object;
@@ -47,7 +46,7 @@ class EntityMapper extends Object implements IEntityMapper
 
 				if ($value instanceof IdentifiedEntity) {
 					$value = $value->getId();
-				} elseif ($value instanceof ArrayCollection || $value instanceof PersistentCollection) {
+				} elseif ($value instanceof Collection) {
 					$value = array_map(function ($entity) {
 						if ($entity instanceof IdentifiedEntity) {
 							$entity = $entity->getId();
