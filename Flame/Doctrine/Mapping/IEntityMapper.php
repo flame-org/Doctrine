@@ -24,4 +24,10 @@ interface IEntityMapper
 	 * @return array
 	 */
 	public function getValues(BaseEntity &$entity);
+
+	/**
+	 * @param BaseEntity $entity
+	 * @return array
+	 */
+	public function getSimpleValues(BaseEntity &$entity);
 } 

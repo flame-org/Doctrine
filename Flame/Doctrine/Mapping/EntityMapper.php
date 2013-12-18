@@ -40,25 +40,83 @@ class EntityMapper extends Object implements IEntityMapper
 	public function getValues(BaseEntity &$entity)
 	{
 		$details = array();
-		foreach ($entity->getReflection()->getProperties(\ReflectionProperty::IS_PROTECTED) as $property) {
+		$properties = $this->getEntityProperties($entity);
+		foreach ($properties as $property) {
 			if (!$property->isStatic()) {
 				$value = $entity->{$property->getName()};
-
-				if ($value instanceof IdentifiedEntity) {
-					$value = $value->getId();
-				} elseif ($value instanceof Collection) {
-					$value = array_map(function ($entity) {
-						if ($entity instanceof IdentifiedEntity) {
-							$entity = $entity->getId();
-						}
-
-						return $entity;
-					}, $value->toArray());
-				}
-
-				$details[$property->getName()] = $value;
+				$details[$property->getName()] = $this->extractor($value);
 			}
 		}
+
 		return $details;
+	}
+
+	/**
+	 * @param BaseEntity $entity
+	 * @return array
+	 */
+	public function getSimpleValues(BaseEntity &$entity)
+	{
+		$details = array();
+		$properties = $this->getEntityProperties($entity);
+		foreach ($properties as $property) {
+			if (!$property->isStatic()) {
+				$value = $entity->{$property->getName()};
+				$details[$property->getName()] = $this->simpleExtractor($value);
+			}
+		}
+
+		return $details;
+	}
+
+	/**
+	 * @param BaseEntity $entity
+	 * @return \Nette\Reflection\Property[]
+	 */
+	protected function getEntityProperties(BaseEntity &$entity)
+	{
+		return $entity->getReflection()->getProperties(\ReflectionProperty::IS_PROTECTED);
+	}
+
+	/**
+	 * @param $value
+	 * @return array
+	 */
+	protected function extractor($value)
+	{
+		if ($value instanceof BaseEntity) {
+			$value = $this->getValues($value);
+		} elseif ($value instanceof Collection) {
+			$value = array_map(function ($entity) {
+				if ($entity instanceof BaseEntity) {
+					$entity = $this->getValues($entity);
+				}
+
+				return $entity;
+			}, $value->toArray());
+		}
+
+		return $value;
+	}
+
+	/**
+	 * @param $value
+	 * @return array
+	 */
+	protected function simpleExtractor($value)
+	{
+		if ($value instanceof IdentifiedEntity) {
+			$value = $value->getId();
+		} elseif ($value instanceof Collection) {
+			$value = array_map(function ($entity) {
+				if ($entity instanceof IdentifiedEntity) {
+					$entity = $entity->getId();
+				}
+
+				return $entity;
+			}, $value->toArray());
+		}
+
+		return $value;
 	}
 }
