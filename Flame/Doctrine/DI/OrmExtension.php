@@ -33,9 +33,6 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 		$builder->addDefinition($this->prefix('restEntityMapper'))
 			->setClass('Flame\Doctrine\Mapping\RestEntityMapper');
 
-		$builder->addDefinition($this->prefix('arrayModelFactory'))
-			->setClass('Flame\Doctrine\ArrayResults\ArrayModelFactory');
-
 		parent::loadConfiguration();
 
 		$configuration = $builder->getDefinition('doctrine.default.ormConfiguration');
