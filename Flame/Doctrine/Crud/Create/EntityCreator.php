@@ -7,12 +7,12 @@
  */
 namespace Flame\Doctrine\Crud\Create;
 
-use Flame\Doctrine\Crud\EntityCrud;
+use Flame\Doctrine\Crud\CrudManager;
 use Flame\Doctrine\EntityDao;
 use Flame\Doctrine\Mapping\IRestEntityMapper;
 use Flame\Doctrine\Entity;
 
-class EntityCreator extends EntityCrud implements IEntityCreator
+class EntityCreator extends CrudManager implements IEntityCreator
 {
 
 	/** @var array  */

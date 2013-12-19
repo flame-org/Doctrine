@@ -7,13 +7,13 @@
  */
 namespace Flame\Doctrine\Crud\Delete;
 
-use Flame\Doctrine\Crud\EntityCrud;
+use Flame\Doctrine\Crud\CrudManager;
 use Flame\Doctrine\Entity;
 use Flame\Doctrine\EntityDao;
 use Nette\InvalidArgumentException;
 use Nette\InvalidStateException;
 
-class EntityDeleter extends EntityCrud implements IEntityDeleter
+class EntityDeleter extends CrudManager implements IEntityDeleter
 {
 
 	/** @var array  */

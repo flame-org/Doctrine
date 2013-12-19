@@ -7,13 +7,13 @@
  */
 namespace Flame\Doctrine\Crud\Update;
 
-use Flame\Doctrine\Crud\EntityCrud;
+use Flame\Doctrine\Crud\CrudManager;
 use Flame\Doctrine\EntityDao;
 use Flame\Doctrine\Mapping\IRestEntityMapper;
 use Flame\Doctrine\Entity;
 use Nette\InvalidArgumentException;
 
-class EntityUpdater extends EntityCrud implements IEntityUpdater
+class EntityUpdater extends CrudManager implements IEntityUpdater
 {
 
 	/** @var array  */

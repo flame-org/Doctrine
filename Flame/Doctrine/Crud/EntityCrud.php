@@ -1,56 +1,88 @@
 <?php
 /**
- * Class EntityCrud
+ * Class CrudFactory
  *
  * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
- * @date: 14.09.13
+ * @date: 15.09.13
  */
 namespace Flame\Doctrine\Crud;
 
-use Nette\InvalidStateException;
+use Flame\Doctrine\Crud\Create\EntityCreator;
+use Flame\Doctrine\Crud\Delete\EntityDeleter;
+use Flame\Doctrine\Crud\Update\EntityUpdater;
+use Flame\Doctrine\EntityDao;
+use Flame\Doctrine\Mapping\IRestEntityMapper;
 use Nette\Object;
 
-abstract class EntityCrud extends Object
+class EntityCrud extends Object implements IEntityCrud
 {
 
-	/** @var bool  */
-	private $flush = true;
+	/** @var \Flame\Doctrine\Mapping\IRestEntityMapper  */
+	private $entityMapper;
+
+	/** @var \Flame\Doctrine\EntityDao  */
+	private $reader;
+
+	/** @var  EntityDeleter */
+	private $deleter;
+
+	/** @var  EntityUpdater */
+	private $updater;
+
+	/** @var  EntityCreator */
+	private $creator;
 
 	/**
-	 * @param bool $flush
-	 * @return $this
+	 * @param EntityDao $dao
+	 * @param IRestEntityMapper $entityMapper
 	 */
-	public function setFlush($flush)
+	function __construct(EntityDao $dao, IRestEntityMapper $entityMapper)
 	{
-		$this->flush = (bool) $flush;
-		return $this;
+		$this->reader = $dao;
+		$this->entityMapper = $entityMapper;
 	}
 
 	/**
-	 * @return boolean
+	 * @return EntityCreator
 	 */
-	public function getFlush()
+	public function getEntityCreator()
 	{
-		return $this->flush;
+		if ($this->creator) {
+			$this->creator = new EntityCreator($this->getEntityReader(), $this->entityMapper);
+		}
+
+		return $this->creator;
 	}
 
 	/**
-	 * @param $hooks
-	 * @param array $args
-	 * @throws \Nette\InvalidStateException
+	 * @return EntityUpdater
 	 */
-	protected function processHooks($hooks, array $args = array())
+	public function getEntityUpdater()
 	{
-		if(!is_array($hooks)) {
-			throw new InvalidStateException('Hooks configuration must be in array');
+		if ($this->updater === null) {
+			$this->updater = new EntityUpdater($this->getEntityReader(), $this->entityMapper);
 		}
 
-		foreach ($hooks as $hook) {
-			if(!is_callable($hook)) {
-				throw new InvalidStateException('Invalid callback given.');
-			}
+		return $this->updater;
+	}
 
-			call_user_func_array($hook, $args);
+	/**
+	 * @return EntityDeleter
+	 */
+	public function getEntityDeleter()
+	{
+		if ($this->deleter === null) {
+			$this->deleter = new EntityDeleter($this->getEntityReader());
 		}
+
+		return $this->deleter;
+	}
+
+	/**
+	 * @return \Flame\Doctrine\EntityDao
+	 */
+	public function getEntityReader()
+	{
+		return $this->reader;
 	}
 }
