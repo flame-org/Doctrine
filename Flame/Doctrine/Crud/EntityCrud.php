@@ -11,13 +11,13 @@ use Flame\Doctrine\Crud\Create\EntityCreator;
 use Flame\Doctrine\Crud\Delete\EntityDeleter;
 use Flame\Doctrine\Crud\Update\EntityUpdater;
 use Flame\Doctrine\EntityDao;
-use Flame\Doctrine\Mapping\IRestEntityMapper;
+use Flame\Doctrine\Mapping\IEntityMapper;
 use Nette\Object;
 
 class EntityCrud extends Object implements IEntityCrud
 {
 
-	/** @var \Flame\Doctrine\Mapping\IRestEntityMapper  */
+	/** @var \Flame\Doctrine\Mapping\IEntityMapper  */
 	private $entityMapper;
 
 	/** @var \Flame\Doctrine\EntityDao  */
@@ -34,9 +34,9 @@ class EntityCrud extends Object implements IEntityCrud
 
 	/**
 	 * @param EntityDao $dao
-	 * @param IRestEntityMapper $entityMapper
+	 * @param IEntityMapper $entityMapper
 	 */
-	function __construct(EntityDao $dao, IRestEntityMapper $entityMapper)
+	function __construct(EntityDao $dao, IEntityMapper $entityMapper)
 	{
 		$this->reader = $dao;
 		$this->entityMapper = $entityMapper;

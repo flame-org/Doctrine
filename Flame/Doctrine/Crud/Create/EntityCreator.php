@@ -9,7 +9,7 @@ namespace Flame\Doctrine\Crud\Create;
 
 use Flame\Doctrine\Crud\CrudManager;
 use Flame\Doctrine\EntityDao;
-use Flame\Doctrine\Mapping\IRestEntityMapper;
+use Flame\Doctrine\Mapping\IEntityMapper;
 use Flame\Doctrine\Entity;
 
 class EntityCreator extends CrudManager implements IEntityCreator
@@ -21,7 +21,7 @@ class EntityCreator extends CrudManager implements IEntityCreator
 	/** @var array  */
 	public $afterCreate = array();
 
-	/** @var \Flame\Doctrine\Mapping\IRestEntityMapper  */
+	/** @var \Flame\Doctrine\Mapping\IEntityMapper  */
 	private $entityMapper;
 
 	/** @var \Flame\Doctrine\EntityDao  */
@@ -29,9 +29,9 @@ class EntityCreator extends CrudManager implements IEntityCreator
 
 	/**
 	 * @param EntityDao $dao
-	 * @param IRestEntityMapper $entityMapper
+	 * @param IEntityMapper $entityMapper
 	 */
-	function __construct(EntityDao $dao, IRestEntityMapper $entityMapper)
+	function __construct(EntityDao $dao, IEntityMapper $entityMapper)
 	{
 		$this->dao = $dao;
 		$this->entityMapper = $entityMapper;

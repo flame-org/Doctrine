@@ -29,11 +29,11 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 		$builder->addDefinition($this->prefix('context'))
 			->setClass('\Flame\Doctrine\DI\Context');
 
+		$builder->addDefinition($this->prefix('entityHydrator'))
+			->setClass('Flame\Doctrine\Mapping\EntityHydrator');
+
 		$builder->addDefinition($this->prefix('entityMapper'))
 			->setClass('Flame\Doctrine\Mapping\EntityMapper');
-
-		$builder->addDefinition($this->prefix('restEntityMapper'))
-			->setClass('Flame\Doctrine\Mapping\RestEntityMapper');
 
 		$builder->addDefinition($this->prefix('entityCrudFactory'))
 			->setClass('Flame\Doctrine\Crud\EntityCrudFactory');

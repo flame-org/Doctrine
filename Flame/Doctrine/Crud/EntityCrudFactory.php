@@ -7,7 +7,7 @@
  */
 namespace Flame\Doctrine\Crud;
 
-use Flame\Doctrine\Mapping\IRestEntityMapper;
+use Flame\Doctrine\Mapping\IEntityMapper;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Object;
 
@@ -17,14 +17,14 @@ class EntityCrudFactory extends Object implements IEntityCrudFactory
 	/** @var \Kdyby\Doctrine\EntityManager  */
 	private $entityManager;
 
-	/** @var \Flame\Doctrine\Mapping\IRestEntityMapper  */
+	/** @var \Flame\Doctrine\Mapping\IEntityMapper  */
 	private $entityMapper;
 
 	/**
 	 * @param EntityManager $entityManager
-	 * @param IRestEntityMapper $entityMapper
+	 * @param IEntityMapper $entityMapper
 	 */
-	function __construct(EntityManager $entityManager, IRestEntityMapper $entityMapper)
+	function __construct(EntityManager $entityManager, IEntityMapper $entityMapper)
 	{
 		$this->entityManager = $entityManager;
 		$this->entityMapper = $entityMapper;

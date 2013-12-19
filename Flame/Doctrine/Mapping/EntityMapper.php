@@ -2,18 +2,35 @@
 /**
  * Class EntityMapper
  *
- * @author: Jiří Šifalda <sifalda.jiri@gmail.com>
- * @date: 04.10.13
+ * @author Jiří Šifalda <sifalda.jiri@gmail.com>
+ * @date 18.12.13
  */
 namespace Flame\Doctrine\Mapping;
 
-use Doctrine\Common\Collections\Collection;
+use Flame\Doctrine\DI\IContext;
 use Kdyby\Doctrine\Entities\BaseEntity;
-use Kdyby\Doctrine\Entities\IdentifiedEntity;
 use Nette\Object;
+use Nette\InvalidStateException;
+use Nette\Reflection\Property;
 
 class EntityMapper extends Object implements IEntityMapper
 {
+
+	/** @var \Flame\Doctrine\DI\IContext  */
+	private $context;
+
+	/** @var \Flame\Doctrine\Mapping\IEntityHydrator  */
+	private $entityMapper;
+
+	/**
+	 * @param IContext $context
+	 * @param IEntityHydrator $entityMapper
+	 */
+	function __construct(IContext $context, IEntityHydrator $entityMapper)
+	{
+		$this->context = $context;
+		$this->entityMapper = $entityMapper;
+	}
 
 	/**
 	 * @param $values
@@ -22,15 +39,7 @@ class EntityMapper extends Object implements IEntityMapper
 	 */
 	public function setValues($values, BaseEntity $entity)
 	{
-		if(count($values)) {
-			foreach ($values as $key => $value) {
-				if(isset($entity->$key)) {
-					$entity->$key = $value;
-				}
-			}
-		}
-
-		return $entity;
+		return $this->entityMapper->hydrate($values, $entity);
 	}
 
 	/**
@@ -39,90 +48,70 @@ class EntityMapper extends Object implements IEntityMapper
 	 */
 	public function getValues(BaseEntity &$entity)
 	{
-		$details = array();
-		if($entity instanceof IdentifiedEntity) {
-			$details['id'] = $entity->getId();
-		}
+		return $this->entityMapper->extract($entity);
+	}
 
-		$properties = $this->getEntityProperties($entity);
+	/**
+	 * @param $values
+	 * @param BaseEntity $entity
+	 * @return BaseEntity
+	 * @throws \Nette\InvalidStateException
+	 */
+	public function initValues($values, BaseEntity $entity)
+	{
+		$parsedValues = array();
+		$properties = $entity->getReflection()->getProperties();
 		foreach ($properties as $property) {
-			if (!$property->isStatic()) {
-				$value = $entity->{$property->getName()};
-				$details[$property->getName()] = $this->extractor($value);
+			if($property->hasAnnotation('required') && !isset($values[$property->name])) {
+				throw new InvalidStateException('Missing required key "' . $property->name . '"');
+			}
+
+			if(!isset($values[$property->name]) && (!$property->hasAnnotation('writable') || !$property->hasAnnotation('required'))) {
+				continue;
+			}
+
+			$value = $values[$property->name];
+			if($value !== null) {
+				$parsedValues[$property->name] = $this->validateProperty($property, $value);
 			}
 		}
 
-		return $details;
+		return $this->setValues($parsedValues, $entity);
 	}
 
 	/**
+	 * @param $values
 	 * @param BaseEntity $entity
-	 * @return array
+	 * @return BaseEntity
 	 */
-	public function getSimpleValues(BaseEntity &$entity)
+	public function updateValues($values, BaseEntity $entity)
 	{
-		$details = array();
-		if($entity instanceof IdentifiedEntity) {
-			$details['id'] = $entity->getId();
-		}
-
-		$properties = $this->getEntityProperties($entity);
+		$parsedValues = array();
+		$properties = $entity->getReflection()->getProperties();
 		foreach ($properties as $property) {
-			if (!$property->isStatic()) {
-				$value = $entity->{$property->getName()};
-				$details[$property->getName()] = $this->simpleExtractor($value);
+			if(!isset($values[$property->name]) || !$property->hasAnnotation('writable')) {
+				continue;
+			}
+
+			$value = $values[$property->name];
+			if($value !== null) {
+				$parsedValues[$property->name] = $this->validateProperty($property, $value);
 			}
 		}
 
-		return $details;
+		return $this->setValues($parsedValues, $entity);
 	}
 
-	/**
-	 * @param BaseEntity $entity
-	 * @return \Nette\Reflection\Property[]
-	 */
-	protected function getEntityProperties(BaseEntity &$entity)
-	{
-		return $entity->getReflection()->getProperties(\ReflectionProperty::IS_PROTECTED);
-	}
 
 	/**
+	 * @param Property $property
 	 * @param $value
-	 * @return array
+	 * @return mixed
 	 */
-	protected function extractor($value)
+	private function validateProperty(Property $property, $value)
 	{
-		if ($value instanceof BaseEntity) {
-			$value = $this->getValues($value);
-		} elseif ($value instanceof Collection) {
-			$value = array_map(function ($entity) {
-				if ($entity instanceof BaseEntity) {
-					$entity = $this->getValues($entity);
-				}
-
-				return $entity;
-			}, $value->toArray());
-		}
-
-		return $value;
-	}
-
-	/**
-	 * @param $value
-	 * @return array
-	 */
-	protected function simpleExtractor($value)
-	{
-		if ($value instanceof IdentifiedEntity) {
-			$value = $value->getId();
-		} elseif ($value instanceof Collection) {
-			$value = array_map(function ($entity) {
-				if ($entity instanceof IdentifiedEntity) {
-					$entity = $entity->getId();
-				}
-
-				return $entity;
-			}, $value->toArray());
+		if($validatorClass = $property->getAnnotation('validator')) {
+			$value = $this->context->getValidator($validatorClass)->validate($value);
 		}
 
 		return $value;

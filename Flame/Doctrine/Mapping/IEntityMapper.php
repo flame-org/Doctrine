@@ -9,9 +9,8 @@ namespace Flame\Doctrine\Mapping;
 
 use Kdyby\Doctrine\Entities\BaseEntity;
 
-interface IEntityMapper 
+interface IEntityMapper
 {
-
 	/**
 	 * @param $values
 	 * @param BaseEntity $entity
@@ -26,8 +25,16 @@ interface IEntityMapper
 	public function getValues(BaseEntity &$entity);
 
 	/**
+	 * @param $values
 	 * @param BaseEntity $entity
-	 * @return array
+	 * @return BaseEntity
 	 */
-	public function getSimpleValues(BaseEntity &$entity);
+	public function initValues($values, BaseEntity $entity);
+
+	/**
+	 * @param $values
+	 * @param BaseEntity $entity
+	 * @return BaseEntity
+	 */
+	public function updateValues($values, BaseEntity $entity);
 } 
