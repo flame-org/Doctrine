@@ -47,7 +47,7 @@ class EntityCrud extends Object implements IEntityCrud
 	 */
 	public function getEntityCreator()
 	{
-		if ($this->creator) {
+		if ($this->creator === null) {
 			$this->creator = new EntityCreator($this->getEntityReader(), $this->entityMapper);
 		}
 
