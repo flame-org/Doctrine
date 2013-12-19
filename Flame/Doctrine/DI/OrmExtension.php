@@ -7,6 +7,8 @@
  */
 namespace Flame\Doctrine\DI;
 
+use Nette\Utils\PhpGenerator\PhpLiteral;
+
 class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 {
 
@@ -35,6 +37,12 @@ class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 
 		$builder->addDefinition($this->prefix('entityCrudFactory'))
 			->setClass('Flame\Doctrine\Crud\EntityCrudFactory');
+
+		// syntax sugar for config
+		$builder->addDefinition($this->prefix('crud'))
+			->setClass('Flame\Doctrine\Crud\EntityCrud')
+			->setFactory('@Flame\Doctrine\Crud\EntityCrudFactory::createEntityCrud', array(new PhpLiteral('$entityName')))
+			->setParameters(array('entityName'));
 
 		parent::loadConfiguration();
 
