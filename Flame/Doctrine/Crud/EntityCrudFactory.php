@@ -11,7 +11,7 @@ use Flame\Doctrine\Mapping\IRestEntityMapper;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Object;
 
-class EntityCrudFactory extends Object
+class EntityCrudFactory extends Object implements IEntityCrudFactory
 {
 
 	/** @var \Kdyby\Doctrine\EntityManager  */
@@ -32,7 +32,7 @@ class EntityCrudFactory extends Object
 
 	/**
 	 * @param $entityName
-	 * @return IEntityCrud
+	 * @return EntityCrud
 	 */
 	public function createEntityCrud($entityName)
 	{
