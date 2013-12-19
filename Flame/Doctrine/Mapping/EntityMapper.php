@@ -40,6 +40,10 @@ class EntityMapper extends Object implements IEntityMapper
 	public function getValues(BaseEntity &$entity)
 	{
 		$details = array();
+		if($entity instanceof IdentifiedEntity) {
+			$details['id'] = $entity->getId();
+		}
+
 		$properties = $this->getEntityProperties($entity);
 		foreach ($properties as $property) {
 			if (!$property->isStatic()) {
@@ -58,6 +62,10 @@ class EntityMapper extends Object implements IEntityMapper
 	public function getSimpleValues(BaseEntity &$entity)
 	{
 		$details = array();
+		if($entity instanceof IdentifiedEntity) {
+			$details['id'] = $entity->getId();
+		}
+
 		$properties = $this->getEntityProperties($entity);
 		foreach ($properties as $property) {
 			if (!$property->isStatic()) {
