@@ -25,14 +25,16 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 	/** @var \Flame\Doctrine\Mapping\IRestEntityMapper  */
 	private $entityMapper;
 
+	/** @var  EntityDao */
+	private $dao;
+
 	/**
 	 * @param EntityDao $dao
 	 * @param IRestEntityMapper $entityMapper
 	 */
 	function __construct(EntityDao $dao, IRestEntityMapper $entityMapper)
 	{
-		parent::__construct($dao);
-
+		$this->dao = $dao;
 		$this->entityMapper = $entityMapper;
 	}
 
@@ -59,7 +61,7 @@ class EntityUpdater extends EntityCrud implements IEntityUpdater
 
 		$this->processHooks($this->afterUpdate, array($entity, $values));
 
-		if($this->flush === true) {
+		if($this->getFlush() === true) {
 			$this->dao->save();
 		}
 

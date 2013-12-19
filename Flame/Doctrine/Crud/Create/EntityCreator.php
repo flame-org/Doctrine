@@ -24,14 +24,16 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 	/** @var \Flame\Doctrine\Mapping\IRestEntityMapper  */
 	private $entityMapper;
 
+	/** @var \Flame\Doctrine\EntityDao  */
+	private $dao;
+
 	/**
 	 * @param EntityDao $dao
 	 * @param IRestEntityMapper $entityMapper
 	 */
 	function __construct(EntityDao $dao, IRestEntityMapper $entityMapper)
 	{
-		parent::__construct($dao);
-
+		$this->dao = $dao;
 		$this->entityMapper = $entityMapper;
 	}
 
@@ -48,7 +50,7 @@ class EntityCreator extends EntityCrud implements IEntityCreator
 		$this->dao->add($entity);
 		$this->processHooks($this->afterCreate, array($entity, $values));
 
-		if($this->flush === true) {
+		if($this->getFlush() === true) {
 			$this->dao->save();
 		}
 

@@ -9,24 +9,12 @@ namespace Flame\Doctrine\Crud;
 
 use Nette\InvalidStateException;
 use Nette\Object;
-use Flame\Doctrine\EntityDao;
 
 abstract class EntityCrud extends Object
 {
 
 	/** @var bool  */
-	protected $flush = true;
-
-	/** @var  EntityDao */
-	protected $dao;
-
-	/**
-	 * @param EntityDao $dao
-	 */
-	function __construct(EntityDao $dao)
-	{
-		$this->dao = $dao;
-	}
+	private $flush = true;
 
 	/**
 	 * @param bool $flush
@@ -36,6 +24,14 @@ abstract class EntityCrud extends Object
 	{
 		$this->flush = (bool) $flush;
 		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getFlush()
+	{
+		return $this->flush;
 	}
 
 	/**
