@@ -8,17 +8,41 @@
 
 namespace Flame\Doctrine;
 
+use Flame\Doctrine\Mapping\EntityHydrator;
 use Kdyby\Doctrine\Entities\IdentifiedEntity;
 
 abstract class Entity extends IdentifiedEntity
 {
+
+	/** @var  EntityHydrator */
+	private $hydrator;
+
+	/**
+	 * @return EntityHydrator
+	 */
+	private function getHydrator()
+	{
+		if ($this->hydrator === null) {
+			$this->hydrator = new EntityHydrator();
+		}
+
+		return $this->hydrator;
+	}
 
 	/**
 	 * @return array
 	 */
 	public function toArray()
 	{
-		return array_merge(array('id' => $this->getId()), get_object_vars($this));
+		return $this->getHydrator()->extract($this);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function toSimpleArray()
+	{
+		return $this->getHydrator()->simpleExtract($this);
 	}
 
 	/**
