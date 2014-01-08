@@ -97,7 +97,7 @@ class EntityHydrator extends Object implements IEntityHydrator
 		} elseif ($value instanceof Collection) {
 			$value = array_map(function ($entity) {
 				if ($entity instanceof BaseEntity) {
-					$entity = $this->extract($entity);
+					$entity = $this->simpleExtract($entity);
 				}
 
 				return $entity;
