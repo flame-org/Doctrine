@@ -7,7 +7,7 @@
  */
 namespace Flame\Doctrine\DI;
 
-use Nette\Utils\PhpGenerator\PhpLiteral;
+use Nette\PhpGenerator\PhpLiteral;
 
 class OrmExtension extends \Kdyby\Doctrine\DI\OrmExtension
 {
